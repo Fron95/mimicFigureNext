@@ -73,9 +73,15 @@ export default function InputWithButton({
     transferData.figure = figure;
     transferData.question = msg;
 
-    const response = await getAnswer(transferData);
+    var response = await getAnswer(transferData);
     // const response = "대답이다.";
     console.log("response : ", response);
+    if (!response) {
+      response = {
+        quote : "I'm sorry. ERROR occured.",
+        summary : transferData.summary
+      }
+    } 
     setAnswer(response.quote);
     setSummary(response.summary);
     sessionStorage.setItem(`${figure}`, `${index + 1}`);

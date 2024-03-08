@@ -47,10 +47,11 @@ export default function Home() {
         <br />
         <br />
         <br />
-        <p className="text-sm text-muted-foreground">
+        
+      </p>
+      <p className="text-sm text-muted-foreground">
           Email : lv.up.finance@gmail.com
         </p>
-      </p>
     </div>
   );
 }
