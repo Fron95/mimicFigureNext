@@ -11,7 +11,7 @@ export async function POST(req: Request, res: NextApiResponse<ResponseData>) {
     console.log("transferData💔", receivedData);
     console.log("type is💔", typeof receivedData)
     try {
-      const url = `https://myself-nathan-eur-organised.trycloudflare.com/quote`;
+      const url = `https://mimic-figure.vercel.app/quote`;
       const response = await fetch(url, {
         method: "POST",
         headers: {
