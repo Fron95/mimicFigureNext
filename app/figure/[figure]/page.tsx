@@ -92,7 +92,6 @@ export default function Home({ params }: { params: { figure: string } }) {
           </div>
         </div>
         <ScrollArea
-          ref={scrollRef} // ScrollArea에 ref 속성으로 scrollRef 연결
           className="w-[700px] rounded-md border p-4"
           style={{ height: "calc(100% - 320px)" }}
         >
