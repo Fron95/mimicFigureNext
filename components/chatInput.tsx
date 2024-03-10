@@ -14,30 +14,31 @@ const bufferWindow = 2;
 // config : format
 function getBuffer(figure: string, index: number, bufferWindow: number) {
   const format = {
-    figure: "",
-    question: "",
-    summary: "",
-    buffer: {},
+    figure: figure, // figure의 값을 할당해야 함
+    question: "", // question 값이 정의되어 있지 않아서 추가
+    summary: "", // summary가 있다면 string 값을 가짐
+    buffer: {} as { [key: string]: [string, string] }, // buffer가 있다면 key: string, value: [string, string] 형태의 값
   };
-  format.summary = sessionStorage.getItem(`${figure}_summary`);
+
+  const summary = sessionStorage.getItem(`${figure}_summary`);
+  if (summary) {
+    format.summary = summary;
+  }
   const lower = index - bufferWindow < 1 ? 1 : index - bufferWindow + 1;
   const iter = index - lower + 1;
 
   for (let i = 1; i < iter + 1; i++) {
-    format.buffer[i] = "";
+    format.buffer[i.toString()] = ["", ""];
   }
 
-  {
-    Array.from(
-      { length: iter },
-      (_, i) =>
-        (format.buffer[i + 1] = [
-          sessionStorage.getItem(`${figure}${lower + i}`),
-          sessionStorage.getItem(`${figure}_response${lower + i}`),
-        ])
-    );
+  for (let i = 0; i < iter; i++) {
+    // 배열의 인덱스를 0부터 시작하도록 변경
+    var idx = i + 1;
+    format.buffer[idx.toString()] = [
+      sessionStorage.getItem(`${format.figure}${lower + i}`) || "",
+      sessionStorage.getItem(`${format.figure}_response${lower + i}`) || "",
+    ];
   }
-
   return format;
 }
 
@@ -78,10 +79,10 @@ export default function InputWithButton({
     console.log("response : ", response);
     if (!response) {
       response = {
-        quote : "I'm sorry. ERROR occured.",
-        summary : transferData.summary
-      }
-    } 
+        quote: "I'm sorry. ERROR occured.",
+        summary: transferData.summary,
+      };
+    }
     setAnswer(response.quote);
     setSummary(response.summary);
     sessionStorage.setItem(`${figure}`, `${index + 1}`);
