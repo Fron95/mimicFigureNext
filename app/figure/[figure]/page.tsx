@@ -38,7 +38,7 @@ export default function Home({ params }: { params: { figure: string } }) {
       : 0;
   const [index, setIndex] = useState(storedIndex);
   const [isLoading, setLoading] = useState(false);
-  const scrollRef = useRef<HTMLDivElement>(null); // 스크롤 위치를 제어하기 위한 ref 생성
+
   const [name, setName] = useState("");
   const [description, setDscription] = useState("");
   const [image, setImage] = useState("");
@@ -56,12 +56,6 @@ export default function Home({ params }: { params: { figure: string } }) {
   }, []);
 
   // useEffect(2) index가 변경될 때마다 스크롤을 가장 하단으로 이동
-  useEffect(() => {
-    if (scrollRef.current) {
-      const scrollElement = scrollRef.current; // scrollRef가 참조하는 요소가 있으면, 해당 요소의 스크롤 위치를 조정
-      scrollElement.scrollTop = scrollElement.scrollHeight; // 스크롤을 가장 하단으로 이동
-    }
-  }, [index]); // index가 변경될 때마다 이 useEffect가 실행되도록 의존성 배열에 추가
   return (
     <div className={styles.ship}>
       <div className={styles.container}>
