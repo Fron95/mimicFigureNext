@@ -97,20 +97,30 @@ export default function Home({ params }: { params: { figure: string } }) {
         >
           <div>
             {index > 0 &&
-              [...Array(index)].map((_, idx) => (
-                <div key={idx}>
-                  <ChatMessage
-                    setInputValue={setInputValue}
-                    msg={sessionStorage.getItem(`${figure}${idx + 1}`)}
-                    talker={"User"}
-                  />
-                  <ChatMessage
-                    setInputValue={setInputValue}
-                    msg={sessionStorage.getItem(`${figure}_response${idx + 1}`)}
-                    talker={"Figure"}
-                  />
-                </div>
-              ))}
+              [...Array(index)].map((_, idx) => {
+                const userMsg = sessionStorage.getItem(`${figure}${idx + 1}`);
+                const figureMsg = sessionStorage.getItem(
+                  `${figure}_response${idx + 1}`
+                );
+                return (
+                  <div key={idx}>
+                    {userMsg && (
+                      <ChatMessage
+                        setInputValue={setInputValue}
+                        msg={userMsg}
+                        talker={"User"}
+                      />
+                    )}
+                    {figureMsg && (
+                      <ChatMessage
+                        setInputValue={setInputValue}
+                        msg={figureMsg}
+                        talker={"Figure"}
+                      />
+                    )}
+                  </div>
+                );
+              })}
           </div>
           {isLoading && <div className={styles.loading}>Loading...</div>}
         </ScrollArea>
