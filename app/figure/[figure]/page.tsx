@@ -38,7 +38,7 @@ export default function Home({ params }: { params: { figure: string } }) {
       : 0;
   const [index, setIndex] = useState(storedIndex);
   const [isLoading, setLoading] = useState(false);
-  const scrollRef = useRef(null); // 스크롤 위치를 제어하기 위한 ref 생성
+  const scrollRef = useRef<HTMLDivElement>(null); // 스크롤 위치를 제어하기 위한 ref 생성
   const [name, setName] = useState("");
   const [description, setDscription] = useState("");
   const [image, setImage] = useState("");
@@ -133,7 +133,6 @@ export default function Home({ params }: { params: { figure: string } }) {
         setAnswer={setAnswer}
         setSummary={setSummary}
       />
-      
     </div>
   );
 }
