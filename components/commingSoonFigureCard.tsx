@@ -34,19 +34,7 @@ export default function CardWithForm({ data }: { data: any }) {
           </Button>
         </CardFooter>
       </Card>
-      {/* <p
-        style={{
-          color: "red",
-          fontSize: "3em",
-          position: "absolute",
-          top: "50%",
-          left: "0%",
-          // transform: "rotate(-45deg)",
-          // transformOrigin: "center",
-        }}
-      >
-        Comming Soon...
-      </p> */}
+      
     </div>
   );
 }

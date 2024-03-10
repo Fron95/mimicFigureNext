@@ -1,0 +1,50 @@
+{
+  "stevejobs": {
+    "name": "Steve Jobs",
+    "available": true,
+    "image": "https://t2.gstatic.com/licensed-image?q=tbn:ANd9GcSX3ZOe1nBi0kfUtkLB7NcH2Qm64eR8eoZ-0TUppPNN4PfjcGAyW-eemOs2JKdRYH6R",
+    "description": "Steve Jobs was an American business magnate, industrial designer, investor, and media proprietor. He was the chairman, chief executive officer (CEO), and co-founder of Apple Inc."
+  },
+  "jeongjooyoung": {
+    "name": "Jeong Joo-Young",
+    "available": false,
+    "image": "https://i.namu.wiki/i/g7w0iTb5xmg-y8pi9RTdy_UcoYJ9T0dSv7PCxtJjiV3SEj07c7g9mIoCay6PKFKph4kHmwLT4Op5uiW1l6qudA.webp",
+    "description": "Jeong Joo-young is a South Korean entrepreneur and the founder of Hyundai Group, making significant contributions to the economic development of South Korea."
+  },
+  "brucelee": {
+    "name": "Bruce Lee",
+    "available": false,
+    "image": "https://i.namu.wiki/i/1OIItye8fuVyb_Igqx12CDUS2rgi1nErAFGGvqD2gTntGBu4jrCwI0_qu6oDq0tFSv3er8Wo6-c1tnuWYBKgtw.webp",
+    "description": "Bruce Lee was a Chinese martial artist and actor, widely known as a global icon in Hong Kong cinema."
+  },
+  "abrahamlincoln": {
+    "name": "Abraham Lincoln",
+    "available": false,
+    "image": "https://i.namu.wiki/i/oUyjs6Ab_RNYF5ycqTNPW1KQUivunOM-N-cpBW4hcewzSXfZ8GJNlC57pEX8FFDZblzowbbnP0oKtIObneEuUw.webp",
+    "description": "Abraham Lincoln was the 16th President of the United States, playing a crucial role during the American Civil War era in advocating for racial equality and the emancipation of slaves."
+  },
+  "juliuscaesar": {
+    "name": "Julius Caesar",
+    "available": false,
+    "image": "https://i.namu.wiki/i/VHy6P4TwaWPrct6LMbgtSQHXIo2PXkZAIkQmK2-N4hTVEVgKpfqToMvpwKqeV3meC3uxYjzpR_zK2JWEUPaLsw.webp",
+    "description": "Julius Caesar was a Roman Emperor, renowned for his political prowess and conquests that significantly expanded the Roman Empire, leading it into its golden age."
+  },
+  "cocochanel": {
+    "name": "Coco Chanel",
+    "available": false,
+    "image": "https://i.namu.wiki/i/eHY8MA6Ec22Zrd9Bj8LitZSV0DY6z8r2G9wjmqiC3FdXbW1xlrF7t7k4g2-_QGMn5IlUi_TnM-27BO0tNR1ZvQ.webp",
+    "description": "Coco Chanel was a French fashion designer and businesswoman, founder of the Chanel brand, and a significant figure in 20th-century fashion."
+  },
+  "waltdisney": {
+    "name": "Walt Disney",
+    "available": false,
+    "image": "https://i.namu.wiki/i/Wd0TM6qpGxO9v-FR7PhIpNZdFg-s8uU6xRFZwxr7E1SHTmJsMhJLOZgkgzzwZrY5y6ghN9lEWYpHtiIKtahodQ.webp",
+    "description": "Walt Disney was an American entrepreneur, animator, and film producer, best known as the co-founder of The Walt Disney Company, and a pioneer of the American animation industry."
+  },
+  "henryford": {
+    "name": "Henry Ford",
+    "available": false,
+    "image": "https://i.namu.wiki/i/tLZDi-cJ5yTwX5QkfIrlGqOMWQcnt6ZfAQjGRKTlz5Kh4d5Ge1tiAuSzZ48ayyvuGARl5li3tU36KZUCdsa9kg.webp",
+    "description": "Henry Ford was an American industrialist and the founder of the Ford Motor Company, revolutionizing the automobile industry with his assembly line production and making cars accessible to the masses."
+  }
+}

@@ -26,6 +26,12 @@
   margin-bottom: 30px;
 }
 
+.loading_container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .figure_info_container {
   display: flex;
   gap: 20px;
@@ -44,6 +50,7 @@
   gap: 3px;
   height: 250px;
 }
+
 .button_container {
   display: flex;
   justify-content: right;
