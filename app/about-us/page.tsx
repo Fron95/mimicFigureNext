@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import style from "@/styles/aboutus.module.css";
 export const metadata: Metadata = {
-  title: "About Us | About Us Page",
+  title: "Ask Titans | About Us",
+  description : "About Us page of Ask Titans. Explore life lessons from history's greats with Ask Titans' AI chat.",
 };
 
 export default function Home() {

@@ -13,6 +13,8 @@
   align-items: center;
 }
 
+
+
 .container {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
@@ -20,6 +22,15 @@
   max-width: 90%;
   width: 100%;
   margin: 0 auto;
+}
+
+.title_container {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.title_container h2 {
+  display: inline;
 }
 
 .card_container {

@@ -79,7 +79,8 @@ export default function InputWithButton({
     console.log("response : ", response);
     if (!response) {
       response = {
-        quote: "I'm sorry. Because of my humble server, It makes error if generating-response time goes over 10 second. Please try again.",
+        quote:
+          "I'm sorry. Because of my humble server, It makes error if generating-response time goes over 10 second. Please try again. ( server needs warm-up ) ",
         summary: transferData.summary,
       };
     }
@@ -142,7 +143,7 @@ export default function InputWithButton({
             onChange={(e) => setInputValue(e.target.value)}
           />
           <p
-            style={{ whiteSpace: "nowrap" }}
+            // style={{ whiteSpace: "nowrap" }}
             className="text-sm text-muted-foreground"
           >
             Bot can make mistakes. Please check for important information.{" "}

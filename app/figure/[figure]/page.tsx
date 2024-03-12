@@ -15,7 +15,7 @@ import type { Metadata } from "next";
 // export const metadata: Metadata = {
 // title: "Figure | Talk with your Figure",
 // };
-
+import { useRouter } from "next/navigation";
 async function getData() {
   try {
     const datas = await fetch("/getdata");
@@ -112,8 +112,7 @@ export default function Home({ params }: { params: { figure: string } }) {
             </div>
           </div>
           <ScrollArea
-            className="w-[700px] rounded-md border p-4"
-            style={{ height: "calc(100% - 320px)" }}
+            className={`w-full h-full rounded-md border p-4 ${styles.scroll_area}`}
           >
             <div>
               {index > 0 &&

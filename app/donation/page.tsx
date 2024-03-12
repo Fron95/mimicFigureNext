@@ -1,7 +1,8 @@
 import style from "@/styles/aboutus.module.css";
 import type { Metadata } from "next";
 export const metadata: Metadata = {
-  title: "Donatino | Donate to a cause you care about",
+  title: "Ask Titans | Donation",
+  description : "Donation page of Ask Titans. Explore life lessons from history's greats with Ask Titans' AI chat.",
 };
 
 export default function Home() {
