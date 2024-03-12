@@ -79,7 +79,7 @@ export default function InputWithButton({
     console.log("response : ", response);
     if (!response) {
       response = {
-        quote: "I'm sorry. ERROR occured.",
+        quote: "I'm sorry. Because of my humble server, It makes error if generating-response time goes over 10 second. Please try again.",
         summary: transferData.summary,
       };
     }

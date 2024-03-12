@@ -148,7 +148,7 @@ export default function Home({ params }: { params: { figure: string } }) {
               {isLoading && (
                 <Button disabled>
                   <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
-                  Preparing a Answer ( 10 ~ 15 sec..)
+                  Preparing a Answer ( 10 sec )
                 </Button>
               )}
             </div>
