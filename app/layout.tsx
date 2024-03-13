@@ -2,6 +2,7 @@
 import { ThemeProvider } from "@/components/theme-provider";
 // 메타데이터
 import type { Metadata } from "next";
+import { SpeedInsights } from "@vercel/speed-insights/next"
 // 스타일
 import "./globals.css";
 

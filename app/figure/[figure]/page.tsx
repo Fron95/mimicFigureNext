@@ -115,6 +115,9 @@ export default function Home({ params }: { params: { figure: string } }) {
             className={`w-full h-full rounded-md border p-4 ${styles.scroll_area}`}
           >
             <div>
+            <p className="leading-7 [&:not(:first-child)]:mt-6">
+          Start Conversation with simple "hi."
+        </p>
               {index > 0 &&
                 [...Array(index)].map((_, idx) => {
                   const userMsg = sessionStorage.getItem(`${figure}${idx + 1}`);
@@ -147,7 +150,7 @@ export default function Home({ params }: { params: { figure: string } }) {
               {isLoading && (
                 <Button disabled>
                   <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
-                  Preparing a Answer ( 10 sec )
+                  Preparing an Answer ( 10 sec )
                 </Button>
               )}
             </div>
