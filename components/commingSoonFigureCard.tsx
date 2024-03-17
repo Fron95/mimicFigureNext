@@ -34,7 +34,6 @@ export default function CardWithForm({ data }: { data: any }) {
           </Button>
         </CardFooter>
       </Card>
-      
     </div>
   );
 }

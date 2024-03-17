@@ -5,6 +5,24 @@
     "image": "https://t2.gstatic.com/licensed-image?q=tbn:ANd9GcSX3ZOe1nBi0kfUtkLB7NcH2Qm64eR8eoZ-0TUppPNN4PfjcGAyW-eemOs2JKdRYH6R",
     "description": "Steve Jobs was an American business magnate, industrial designer, investor, and media proprietor. He was the chairman, chief executive officer (CEO), and co-founder of Apple Inc."
   },
+  "waltdisney": {
+    "name": "Walt Disney",
+    "available": true,
+    "image": "https://i.namu.wiki/i/Wd0TM6qpGxO9v-FR7PhIpNZdFg-s8uU6xRFZwxr7E1SHTmJsMhJLOZgkgzzwZrY5y6ghN9lEWYpHtiIKtahodQ.webp",
+    "description": "Walt Disney was an American entrepreneur, animator, and film producer, best known as the co-founder of The Walt Disney Company, and a pioneer of the American animation industry."
+  },
+  "henryford": {
+    "name": "Henry Ford",
+    "available": true,
+    "image": "https://i.namu.wiki/i/tLZDi-cJ5yTwX5QkfIrlGqOMWQcnt6ZfAQjGRKTlz5Kh4d5Ge1tiAuSzZ48ayyvuGARl5li3tU36KZUCdsa9kg.webp",
+    "description": "Henry Ford was an American industrialist and the founder of the Ford Motor Company, revolutionizing the automobile industry with his assembly line production and making cars accessible to the masses."
+  },
+  "elonmusk": {
+    "name": "Elon Musk",
+    "available": true,
+    "image": "https://upload.wikimedia.org/wikipedia/commons/e/ed/Elon_Musk_Royal_Society.jpg",
+    "description": "Elon Musk is a entrepreneur known for founding SpaceX and leading Tesla, Inc. He has played significance in various innovative companies, including The Boring Company, Neuralink, and OpenAI, contributing to advancements in transportation, space exploration, and technology."
+  },
   "jeongjooyoung": {
     "name": "Jeong Joo-Young",
     "available": false,
@@ -34,17 +52,5 @@
     "available": false,
     "image": "https://i.namu.wiki/i/eHY8MA6Ec22Zrd9Bj8LitZSV0DY6z8r2G9wjmqiC3FdXbW1xlrF7t7k4g2-_QGMn5IlUi_TnM-27BO0tNR1ZvQ.webp",
     "description": "Coco Chanel was a French fashion designer and businesswoman, founder of the Chanel brand, and a significant figure in 20th-century fashion."
-  },
-  "waltdisney": {
-    "name": "Walt Disney",
-    "available": false,
-    "image": "https://i.namu.wiki/i/Wd0TM6qpGxO9v-FR7PhIpNZdFg-s8uU6xRFZwxr7E1SHTmJsMhJLOZgkgzzwZrY5y6ghN9lEWYpHtiIKtahodQ.webp",
-    "description": "Walt Disney was an American entrepreneur, animator, and film producer, best known as the co-founder of The Walt Disney Company, and a pioneer of the American animation industry."
-  },
-  "henryford": {
-    "name": "Henry Ford",
-    "available": false,
-    "image": "https://i.namu.wiki/i/tLZDi-cJ5yTwX5QkfIrlGqOMWQcnt6ZfAQjGRKTlz5Kh4d5Ge1tiAuSzZ48ayyvuGARl5li3tU36KZUCdsa9kg.webp",
-    "description": "Henry Ford was an American industrialist and the founder of the Ford Motor Company, revolutionizing the automobile industry with his assembly line production and making cars accessible to the masses."
   }
 }

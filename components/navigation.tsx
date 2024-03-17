@@ -1,5 +1,8 @@
+
+
 // style
 import styles from "@/styles/home.module.css";
+// 다국어 지원
 
 import React from "react";
 import Link from "next/link";

@@ -1,6 +1,7 @@
 "use client";
 
 // style
+import { useTranslation } from "next-i18next";
 import { buttonVariants } from "@/components/ui/button";
 import { Button } from "@/components/ui/button";
 import { ReloadIcon } from "@radix-ui/react-icons";
@@ -27,6 +28,7 @@ async function getData() {
 }
 
 export default function Home({ params }: { params: { figure: string } }) {
+  const { t } = useTranslation("common");
   // 인물 이름
   const regex = /%20/g; // 정규 표현식, 'g'는 전역 검색을 의미함
   const figure = params.figure.replace(regex, "").toLowerCase(); // figure의 이름을 소문자로 변경
@@ -115,9 +117,9 @@ export default function Home({ params }: { params: { figure: string } }) {
             className={`w-full h-full rounded-md border p-4 ${styles.scroll_area}`}
           >
             <div>
-            <p className="leading-7 [&:not(:first-child)]:mt-6">
-          Start Conversation with simple "hi."
-        </p>
+              <p className="leading-7 [&:not(:first-child)]:mt-6">
+                Start Conversation with simple "{t('home')}"
+              </p>
               {index > 0 &&
                 [...Array(index)].map((_, idx) => {
                   const userMsg = sessionStorage.getItem(`${figure}${idx + 1}`);

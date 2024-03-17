@@ -18,13 +18,13 @@ export default function CardWithForm({ data }: { data: any }) {
     <div>
       <Card className={`w-[350px] ${styles.card_container}`}>
         <CardHeader>
-          <div
-            className={`flex flex-col items-center mt-4 ${styles.img_container}`}
-          >
-            <Link href={`/figure/${data.name}`}>
+          <Link href={`/figure/${data.name}`}>
+            <div
+              className={`flex flex-col items-center mt-4 ${styles.img_container}`}
+            >
               <img src={data.image} alt={`image of ${data.name}`} />
-            </Link>
-          </div>
+            </div>
+          </Link>
         </CardHeader>
         <CardContent>
           <CardTitle>{data.name}</CardTitle>

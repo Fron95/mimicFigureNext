@@ -1,10 +1,14 @@
+
+
 // 다크모드
 import { ThemeProvider } from "@/components/theme-provider";
 // 메타데이터
 import type { Metadata } from "next";
-import { SpeedInsights } from "@vercel/speed-insights/next"
+import { SpeedInsights } from "@vercel/speed-insights/next";
 // 스타일
 import "./globals.css";
+// 다국어 사이트
+import { appWithTranslation } from "next-i18next";
 
 import { Inter } from "next/font/google";
 
