@@ -3,13 +3,11 @@ type ResponseData = {
   message: string;
 };
 
-
-
 export async function POST(req: Request, res: NextApiResponse<ResponseData>) {
   if (req.method === "POST") {
     const receivedData = await req.json();
     console.log("transferData💔", receivedData);
-    console.log("type is💔", typeof receivedData)
+    console.log("type is💔", typeof receivedData);
     try {
       const url = `https://mimic-figure.vercel.app/quote`;
       const response = await fetch(url, {
@@ -28,8 +26,8 @@ export async function POST(req: Request, res: NextApiResponse<ResponseData>) {
         quote: "sorry. ERROR occurred. please try again.",
         summary: receivedData.summary,
       };
-      console.log("errorData💔",typeof errorData);
-      return Response.json({data : errorData});
+      console.log("errorData💔", typeof errorData);
+      return Response.json({ data: errorData });
     }
   } else {
     res.status(405).json({ message: "We only support POST" });

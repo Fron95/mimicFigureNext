@@ -18,9 +18,7 @@ export default function ChatMessage({
     return (
       <div className={styles.chat_container}>
         <div className={styles.chatter_info}>
-          <Avatar
-            image={  image    }
-          />
+          <Avatar image="/image/user_profile.png" />
           <div className={styles.name}>User</div>
         </div>
         <div>
@@ -34,11 +32,7 @@ export default function ChatMessage({
       <div className={styles.chat_container}>
         <div className={styles.chatter_info_figure}>
           <div className={styles.name}>{name}</div>
-          <Avatar
-            image={
-              "https://t2.gstatic.com/licensed-image?q=tbn:ANd9GcSX3ZOe1nBi0kfUtkLB7NcH2Qm64eR8eoZ-0TUppPNN4PfjcGAyW-eemOs2JKdRYH6R"
-            }
-          />
+          <Avatar image={image} />
         </div>
         <div>
           <p
