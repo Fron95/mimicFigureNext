@@ -28,9 +28,6 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Generate Dynamic Open Graph and Twitter Images in Next.js",
-    description:
-      "A guide on how to optimize SEO with static and dynamic metatags using Next.js 13's new Metadata API.",
     images: ["/image/simple_favicon2.png"],
   },
 };
