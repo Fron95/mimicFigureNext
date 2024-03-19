@@ -34,8 +34,7 @@ export default function RootLayout({
 }>) {
   return (
     <html suppressHydrationWarning lang="en">
-      <Head>
-      <link rel="icon" href="/path/to/favicon.ico">
+      <Head>      
         <Script id="show-banner">
           {`<!-- Google Tag Manager -->
         <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
