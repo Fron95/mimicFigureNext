@@ -1,5 +1,3 @@
-
-
 // 다크모드
 import { ThemeProvider } from "@/components/theme-provider";
 // 메타데이터
@@ -17,6 +15,9 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "Home | Figure's Talk",
   description: "Select & Talk with historical figures",
+  icons: {
+    icon: "/image/simple_favicon2.png",
+  },
 };
 
 // navigation
