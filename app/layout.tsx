@@ -4,6 +4,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import type { Metadata } from "next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import Head from "next/head";
+import Link from "next/link";
 import Script from "next/script";
 // 구글애널리틱스
 import { GoogleAnalytics } from "@next/third-parties/google";
@@ -34,6 +35,9 @@ export default function RootLayout({
 }>) {
   return (
     <html suppressHydrationWarning lang="en">
+      <Head>
+        <Link rel="icon" href={"/image/simple_favicon2"} />
+      </Head>
       <body className={inter.className}>
         <ThemeProvider
           attribute="class"
@@ -51,3 +55,4 @@ export default function RootLayout({
     </html>
   );
 }
+
