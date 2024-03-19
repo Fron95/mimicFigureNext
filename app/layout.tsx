@@ -11,7 +11,6 @@ import { GoogleAnalytics } from "@next/third-parties/google";
 // 스타일
 import "./globals.css";
 // 다국어 사이트
-import { appWithTranslation } from "next-i18next";
 
 import { Inter } from "next/font/google";
 
@@ -22,6 +21,17 @@ export const metadata: Metadata = {
   description: "Select & Talk with historical figures",
   icons: {
     icon: "/image/simple_favicon2.png",
+  },
+  openGraph: {
+    type: "article",
+    images: ["/image/simple_favicon2.png"],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Generate Dynamic Open Graph and Twitter Images in Next.js",
+    description:
+      "A guide on how to optimize SEO with static and dynamic metatags using Next.js 13's new Metadata API.",
+    images: ["/image/simple_favicon2.png"],
   },
 };
 
@@ -55,4 +65,3 @@ export default function RootLayout({
     </html>
   );
 }
-
