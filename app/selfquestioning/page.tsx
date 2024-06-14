@@ -7,7 +7,7 @@ import TypographyH1 from "@/components/selftalk/TypographyH1";
 import TypographyH2 from "@/components/selftalk/TypographyH2";
 import TypographyP from "@/components/selftalk/TypographyP";
 
-import left from "@/components/selftalk/left";
+
 
 import { Button } from "@/components/ui/button";
 import InputWithButton from "@/components/selftalk/InputWithButton";
