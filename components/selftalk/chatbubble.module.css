@@ -1,0 +1,111 @@
+/* styles/ChatBubble.module.css */
+.chatContainer {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.chatBubbleWrapper {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    justify-content: flex-start;
+    /* 기본적으로 왼쪽 정렬 */
+    margin-bottom: 10px;
+    /* 각 채팅 버블 간의 간격 추가 */
+}
+
+.chatBubble1PWrapper {
+    justify-content: left;
+}
+
+.chatBubble2PWrapper {
+    justify-content: right;
+}
+
+.chatBubble {
+    color: #F4F4F4;
+    /* 글자 색깔 설정 */
+    padding: 10px 20px;
+    display: inline-block;
+    max-width: 300px;
+    /* 최대 너비 설정 */
+    word-wrap: break-word;
+    /* 긴 단어를 줄바꿈 */
+    overflow-wrap: break-word;
+    /* 긴 단어를 줄바꿈 (IE 및 최신 브라우저 호환) */
+    white-space: pre-wrap;
+    /* 줄바꿈 문자를 그대로 렌더링 */
+    border-radius: 20px;
+    /* 기본적으로 둥글게 설정 */
+    position: relative;
+    /* 시간 표시를 위한 상대 위치 설정 */
+    background-color: #21978B;
+    /* 기본 배경색 설정 */
+}
+
+.chatBubble1P {
+    background-color: #21978B;
+    /* 1P 배경색 */
+    border-radius: 20px 20px 20px 0px;
+    /* 1P 모서리 둥글게 */
+    margin-left: 10px;
+    /* 오른쪽 정렬 시 간격 추가 */
+}
+
+.chatBubble2P {
+    background-color: #4F5665;
+    /* 2P 배경색 */
+    border-radius: 20px 20px 0px 20px;
+    /* 2P 모서리 둥글게 */
+    margin-right: 10px;
+    /* 왼쪽 정렬 시 간격 추가 */
+}
+
+.time {
+    font-size: 0.75rem;
+    color: black;
+    /* 글자 색깔 설정 */
+    margin: 0 10px;
+    /* 좌우 여백 추가 */
+}
+
+.iconContainer {
+    display: flex;
+    justify-content: space-between;
+    position: absolute;
+    top: -10px;
+    right: 10px;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 10px;
+    padding: 2px 5px;
+    visibility: hidden;
+    /* 기본적으로 숨김 */
+}
+
+.chatBubble:hover .iconContainer {
+    visibility: visible;
+    /* 호버 시 보이기 */
+}
+
+.icon {
+    cursor: pointer;
+    color: #F4F4F4;
+    /* 아이콘 색깔 */
+    margin: 0 5px;
+}
+
+.editContainer {
+    display: flex;
+    flex-direction: column;
+}
+
+.editTextarea {
+    width: 100%;
+    margin-bottom: 5px;
+    color: black;
+}
+
+.saveButton {
+    align-self: flex-end;
+}

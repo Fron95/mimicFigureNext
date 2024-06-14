@@ -1,0 +1,118 @@
+/* styles/Home.module.css */
+.rightContent {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.rightContent>*:last-child {
+    margin-top: auto;
+}
+
+
+.editableContainer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    cursor: pointer;
+    
+}
+
+.editInput,
+.editTextarea {
+    width: 100%;
+    padding: 8px;
+    margin: 8px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.editTextarea {
+    height: 60px;
+}
+
+.editIcon {
+    cursor: pointer;
+    margin-left: 8px;
+    font-size: 1.5rem;
+    display: none;
+    /* 기본적으로 숨김 */
+}
+
+.editableContainer:hover .editIcon {
+    display: block;
+    /* 마우스 오버 시 보이기 */
+}
+
+.buttonWrapper {
+    display: flex;
+    gap: 4px;
+    justify-content: left;
+
+}
+
+.newMessagePopup {
+    position: absolute;
+    bottom: 100px;
+    /* input 바로 위에 5px 여백을 두도록 설정 (input의 높이를 고려하여 조정) */
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #ffeb3b;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    z-index: 1000;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.chatinfo {
+    background-color: #F4F4F4;
+    padding: 20px;
+    border-radius: 8px;
+    margin: 0 0 20px 0;
+}
+
+.chatListItem {
+    cursor: pointer;
+}
+
+.iconWrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.iconContainer {
+    display: flex;
+    gap: 10px;
+    margin: 40px 0;
+    width: 100%;
+    justify-content: space-evenly;
+}
+
+.icon {
+    cursor: pointer;
+}
+
+.pointerCursor {
+    cursor: pointer;
+}
+
+.iconWrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.stopwatch {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0.5;
+    font-size: 2rem;
+    z-index: 999;
+    pointer-events: none;
+}
