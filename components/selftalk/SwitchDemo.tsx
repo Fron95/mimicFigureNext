@@ -26,7 +26,8 @@ export default function SwitchDemo({ onToggle }: SwitchDemoProps) {
 
   return (
     <div className="flex items-center space-x-2">
-      <Label htmlFor="Player-Switch"> Press Tab → Switch Ego</Label>
+      <Label htmlFor="Player-Switch"> Tab 눌러서 → 위치변경 </Label>
+      {/* <Label htmlFor="Player-Switch"> Press Tab → Switch Ego</Label> */}
       <Switch id="Player-Switch" ref={switchRef} onCheckedChange={onToggle} />
     </div>
   );

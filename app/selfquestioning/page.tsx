@@ -271,7 +271,7 @@ export default function Home() {
     <Layout
       leftContent={
         <>
-          <TypographyH1>SELF-TALK</TypographyH1>
+          <TypographyH1>자문자답</TypographyH1>
           <div className={styles.iconContainer}>
             <div className={styles.iconWrapper}>
               <Image
@@ -282,7 +282,7 @@ export default function Home() {
                 onClick={handleNewChat}
                 className={styles.icon}
               />
-              <span>new chat</span>
+              <span>새로운 대화</span>
             </div>
             <div className={styles.iconWrapper}>
               <Image
@@ -293,7 +293,7 @@ export default function Home() {
                 onClick={downloadTxtFile}
                 className={styles.icon}
               />
-              <span>download chat</span>
+              <span>대화 내보내기</span>
             </div>
           </div>
           <Table>
@@ -302,7 +302,7 @@ export default function Home() {
               <TableRow>
                 <TableHead>제목</TableHead>
                 <TableHead>설명</TableHead>
-                <TableHead>마지막 대화일시</TableHead>
+                <TableHead>마지막 대화</TableHead>
                 <TableHead></TableHead>
               </TableRow>
             </TableHeader>
