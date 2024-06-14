@@ -1,7 +1,12 @@
 // components/Layout.js
 import styles from './Layout.module.css';
 
-export default function Layout({ leftContent, rightContent }) {
+interface LayoutProps {
+  leftContent: React.ReactNode;
+  rightContent: React.ReactNode;
+}
+
+export default function Layout({ leftContent, rightContent }: LayoutProps) {
   return (
     <div className={styles.container}>
       <div className={styles.left}>{leftContent}</div>      
