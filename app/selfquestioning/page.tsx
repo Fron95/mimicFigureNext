@@ -408,12 +408,12 @@ export default function Home() {
             <div style={{ position: "relative" }}>
               <InputWithButton
                 message={message}
-                onInputChange={handleInputChange}
+                // onInputChange={handleInputChange}
                 onSend={handleSend}
                 player={player}
                 setPlayer={setPlayer}
                 setMessage={setMessage}
-                onTogglePlayer={togglePlayer}
+                // onTogglePlayer={togglePlayer}
               />
             </div>
             {showNewMessagePopup && (
