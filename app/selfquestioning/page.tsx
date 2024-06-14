@@ -12,7 +12,7 @@ import left from "@/components/selftalk/left";
 import { Button } from "@/components/ui/button";
 import InputWithButton from "@/components/selftalk/InputWithButton";
 import Layout from "@/components/selftalk/Layout";
-import ChatBubble from "@/components/selftalk/ChatBubble";
+import ChatBubble from "@/components/selftalk/chatbubble";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
 import {
