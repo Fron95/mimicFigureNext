@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import styles from "./ChatBubble.module.css";
+import styles from "./chatbubble.module.css";
 
 interface ChatBubbleProps {
   is1P: boolean;
