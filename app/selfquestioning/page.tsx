@@ -1,6 +1,6 @@
 "use client";
 import styles from "./page.module.css";
-
+import Link from "next/link";
 import React, { useState, useEffect, useRef, ChangeEvent } from "react";
 import Image from "next/image";
 import TypographyH1 from "@/components/selftalk/TypographyH1";
@@ -156,7 +156,6 @@ export default function Home() {
   };
 
   const isScrollBelowHalf = () => {
-    
     if (!scrollViewportRef.current) return false;
     const { scrollTop, scrollHeight, clientHeight } = scrollViewportRef.current;
     // console.log("확인부터", scrollTop, scrollHeight, clientHeight, scrollHeight - clientHeight * 1.2 < scrollTop, scrollHeight - clientHeight * 1.2, scrollTop);
@@ -307,10 +306,8 @@ export default function Home() {
                 <Table>
                   <TableHeader>
                     <TableRow>
-                      <TableHead>제목</TableHead>
-                      <TableHead>설명</TableHead>
-                      <TableHead>마지막 대화</TableHead>
-                      <TableHead></TableHead>
+                      <TableHead>내용</TableHead>
+                      <TableHead>삭제</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
@@ -321,19 +318,18 @@ export default function Home() {
                           index === currentChatIndex ? styles.activeChatRow : ""
                         }`}
                       >
-                        <TableCell
-                          className="font-medium"
-                          onClick={() => handleLoadChat(index)}
-                        >
-                          {chat.title}
-                        </TableCell>
                         <TableCell onClick={() => handleLoadChat(index)}>
-                          {chat.description}
-                        </TableCell>
-                        <TableCell onClick={() => handleLoadChat(index)}>
-                          {chat.lastMessageTime
-                            ? new Date(chat.lastMessageTime).toLocaleString()
-                            : ""}
+                          <div
+                            style={{ fontSize: "1.125rem", fontWeight: "bold" }}
+                          >
+                            {chat.title}
+                          </div>
+                          <div>{chat.description}</div>
+                          <div style={{ color: "#aaa" }}>
+                            {chat.lastMessageTime
+                              ? new Date(chat.lastMessageTime).toLocaleString()
+                              : ""}
+                          </div>
                         </TableCell>
                         <TableCell
                           onClick={(e) => {
@@ -349,8 +345,11 @@ export default function Home() {
                 </Table>
               </div>
             </ScrollArea>
+
             <div className={styles.buttonWrapperSecond}>
-              <Button variant="outline">자문자답 사례/설명</Button>
+              <Link href="/selfquestioning/effects" passHref>
+                <Button variant="outline">자문자답 사례/설명</Button>
+              </Link>
             </div>
           </div>
         </>
