@@ -52,9 +52,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <div>
-            {/* <Navigation /> */}
-          </div>
+          <div>{/* <Navigation /> */}</div>
           {children}
         </ThemeProvider>
       </body>

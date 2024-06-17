@@ -9,14 +9,6 @@
     border-radius: 20px;
   }
    
-  
-  .input {
-    flex-grow: 1;
-    padding: 10px;
-    border: none;
-    outline: none;
-    font-size: 1rem;
-    border-radius: 20px;
-    margin: 0 10px;
-  }
-  
+.textarea{
+  resize: none;
+}

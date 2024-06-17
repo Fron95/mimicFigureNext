@@ -39,7 +39,7 @@ export default function InputWithButton({
       <SwitchDemo onToggle={togglePlayer} />
       <Textarea
         placeholder="Message"
-        className="flex-grow"
+        className={`flex-grow ${styles.textarea}`}
         value={message}
         onChange={handleChange}
         onKeyDown={handleKeyDown}

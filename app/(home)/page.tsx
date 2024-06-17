@@ -5,7 +5,8 @@ import CommingSoonFigureCard from "@/components/commingSoonFigureCard";
 import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Ask Titans | Wisdom from the Greats through AI-Powered Chat",
-  description: "Explore life lessons from history's greats with Ask Titans' AI chat. Uncover life, business, and leadership insights learned in life with GPT3 chat",
+  description:
+    "Explore life lessons from history's greats with Ask Titans' AI chat. Uncover life, business, and leadership insights learned in life with GPT3 chat",
 };
 
 // DataItem 인터페이스 정의

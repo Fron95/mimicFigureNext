@@ -7,8 +7,6 @@ import TypographyH1 from "@/components/selftalk/TypographyH1";
 import TypographyH2 from "@/components/selftalk/TypographyH2";
 import TypographyP from "@/components/selftalk/TypographyP";
 
-
-
 import { Button } from "@/components/ui/button";
 import InputWithButton from "@/components/selftalk/InputWithButton";
 import Layout from "@/components/selftalk/Layout";
@@ -25,7 +23,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { relative } from "path";
 
 interface Message {
   text: string;
@@ -52,6 +49,7 @@ export default function Home() {
   const [player, setPlayer] = useState<string>("1p");
   const [showNewMessagePopup, setShowNewMessagePopup] =
     useState<boolean>(false);
+  const [isLeftVisible, setIsLeftVisible] = useState<boolean>(true);
   const scrollViewportRef = useRef<HTMLDivElement>(null);
   const [chats, setChats] = useState<Chat[]>([
     {
@@ -158,14 +156,18 @@ export default function Home() {
   };
 
   const isScrollBelowHalf = () => {
+    
     if (!scrollViewportRef.current) return false;
     const { scrollTop, scrollHeight, clientHeight } = scrollViewportRef.current;
-    // console.log("냥",scrollHeight - clientHeight)
-    // console.log("녕",scrollTop)
+    // console.log("확인부터", scrollTop, scrollHeight, clientHeight, scrollHeight - clientHeight * 1.2 < scrollTop, scrollHeight - clientHeight * 1.2, scrollTop);
+    // scrollheight : 최대크기
+    // clientheight : 스크린크기
+    // scrolltop : 현재위치중에서 스크린최상단
     return scrollHeight - clientHeight * 1.2 < scrollTop;
   };
 
   const scrollToBottom = () => {
+    // console.log("내려감");
     if (scrollViewportRef.current) {
       scrollViewportRef.current.scrollTop =
         scrollViewportRef.current.scrollHeight;
@@ -173,24 +175,11 @@ export default function Home() {
   };
 
   useEffect(() => {
-    const handleScroll = () => {
-      if (scrollViewportRef.current) {
-        const { scrollTop, scrollHeight, clientHeight } =
-          scrollViewportRef.current;
-        console.log(`Scroll Top: ${scrollTop}`);
-        console.log(`Scroll Height: ${scrollHeight}`);
-        console.log(`Client Height: ${clientHeight}`);
-        console.log(`Scroll Bottom: ${scrollHeight - clientHeight}`);
-      }
-    };
-
-    const scrollElement = scrollViewportRef.current;
-    scrollElement?.addEventListener("scroll", handleScroll);
-
-    return () => {
-      scrollElement?.removeEventListener("scroll", handleScroll);
-    };
-  }, []);
+    if (scrollViewportRef.current) {
+      const { scrollTop, scrollHeight, clientHeight } =
+        scrollViewportRef.current;
+    }
+  });
 
   useEffect(() => {
     if (isScrollBelowHalf()) {
@@ -242,6 +231,8 @@ export default function Home() {
     setDescription(newChat.description);
     setMessages(newChat.messages);
     setStopwatchRunning(true);
+    // 새로운 대화가 생성되었을 때 최하단으로 스크롤
+    // setTimeout(scrollToBottom, 0);
   };
 
   const handleLoadChat = (index: number) => {
@@ -251,6 +242,7 @@ export default function Home() {
     setDescription(chat.description);
     setMessages(chat.messages);
     setStopwatchRunning(true);
+    setTimeout(scrollToBottom, 0); // 대화 로드 후 최하단으로 스크롤
   };
 
   const handleDeleteChat = (index: number) => {
@@ -267,84 +259,109 @@ export default function Home() {
     setStopwatchRunning(false);
   };
 
+  const toggleLeftVisibility = () => {
+    setIsLeftVisible((prev) => !prev);
+  };
+
   return (
     <Layout
+      toggleLeftVisibility={toggleLeftVisibility}
+      isLeftVisible={isLeftVisible}
       leftContent={
         <>
-          <TypographyH1>자문자답</TypographyH1>
-          <div className={styles.iconContainer}>
-            <div className={styles.iconWrapper}>
-              <Image
-                src="/images/plus_green.png"
-                alt="New Chat"
-                width={24 * 6}
-                height={24 * 6}
-                onClick={handleNewChat}
-                className={styles.icon}
-              />
-              <span>새로운 대화</span>
+          <div
+            className={`${styles.leftContent} ${
+              isLeftVisible ? styles.visible : styles.hidden
+            }`}
+          >
+            <TypographyH1>자문자답self-questioning</TypographyH1>
+            <div className={styles.iconContainer}>
+              <div className={styles.iconWrapper}>
+                <Image
+                  src="/images/plus_green.png"
+                  alt="New Chat"
+                  width={24 * 6}
+                  height={24 * 6}
+                  onClick={handleNewChat}
+                  className={styles.icon}
+                />
+                <span>새로운 대화</span>
+              </div>
+              <div className={styles.iconWrapper}>
+                <Image
+                  src="/images/download_green.png"
+                  alt="Download"
+                  width={24 * 6}
+                  height={24 * 6}
+                  onClick={downloadTxtFile}
+                  className={styles.icon}
+                />
+                <span>대화 내보내기</span>
+              </div>
             </div>
-            <div className={styles.iconWrapper}>
-              <Image
-                src="/images/download_green.png"
-                alt="Download"
-                width={24 * 6}
-                height={24 * 6}
-                onClick={downloadTxtFile}
-                className={styles.icon}
-              />
-              <span>대화 내보내기</span>
+            <ScrollArea className="h-1/2 w-full rounded-md border p-4">
+              <div className="p-4">
+                <TypographyP>
+                  <strong>💬 대화목록</strong>
+                </TypographyP>
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>제목</TableHead>
+                      <TableHead>설명</TableHead>
+                      <TableHead>마지막 대화</TableHead>
+                      <TableHead></TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {chats.map((chat, index) => (
+                      <TableRow
+                        key={index}
+                        className={`${styles.pointerCursor} ${
+                          index === currentChatIndex ? styles.activeChatRow : ""
+                        }`}
+                      >
+                        <TableCell
+                          className="font-medium"
+                          onClick={() => handleLoadChat(index)}
+                        >
+                          {chat.title}
+                        </TableCell>
+                        <TableCell onClick={() => handleLoadChat(index)}>
+                          {chat.description}
+                        </TableCell>
+                        <TableCell onClick={() => handleLoadChat(index)}>
+                          {chat.lastMessageTime
+                            ? new Date(chat.lastMessageTime).toLocaleString()
+                            : ""}
+                        </TableCell>
+                        <TableCell
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleDeleteChat(index);
+                          }}
+                        >
+                          ❌
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
+            </ScrollArea>
+            <div className={styles.buttonWrapperSecond}>
+              <Button variant="outline">자문자답 사례/설명</Button>
             </div>
           </div>
-          <Table>
-            <TableCaption>대화 목록</TableCaption>
-            <TableHeader>
-              <TableRow>
-                <TableHead>제목</TableHead>
-                <TableHead>설명</TableHead>
-                <TableHead>마지막 대화</TableHead>
-                <TableHead></TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {chats.map((chat, index) => (
-                <TableRow
-                  key={index}
-                  className={`${styles.pointerCursor} ${
-                    index === currentChatIndex ? styles.activeChatRow : ""
-                  }`}
-                >
-                  <TableCell
-                    className="font-medium"
-                    onClick={() => handleLoadChat(index)}
-                  >
-                    {chat.title}
-                  </TableCell>
-                  <TableCell onClick={() => handleLoadChat(index)}>
-                    {chat.description}
-                  </TableCell>
-                  <TableCell onClick={() => handleLoadChat(index)}>
-                    {chat.lastMessageTime
-                      ? new Date(chat.lastMessageTime).toLocaleString()
-                      : ""}
-                  </TableCell>
-                  <TableCell
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleDeleteChat(index);
-                    }}
-                  >
-                    ❌
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
         </>
       }
       rightContent={
-        chats.length > 0 && (
-          <div className={styles.rightContent}>
+        <div
+          className={`${styles.rightContent} ${
+            isLeftVisible ? styles.rightContentHidden : ""
+          }`}
+        >
+          {chats.length > 0 && (
             <ScrollArea
               className="h-full w-full rounded-md border p-4"
               ref={scrollViewportRef}
@@ -390,9 +407,6 @@ export default function Home() {
                     is1P={msg.player === "1p"}
                     message={msg.text}
                     time={new Date(msg.time).toLocaleString("ko-KR", {
-                      // year: "numeric",
-                      // month: "2-digit",
-                      // day: "2-digit",
                       hour: "2-digit",
                       minute: "2-digit",
                     })}
@@ -405,27 +419,22 @@ export default function Home() {
                 ))}
               </div>
             </ScrollArea>
-            <div style={{ position: "relative" }}>
-              <InputWithButton
-                message={message}
-                // onInputChange={handleInputChange}
-                onSend={handleSend}
-                player={player}
-                setPlayer={setPlayer}
-                setMessage={setMessage}
-                // onTogglePlayer={togglePlayer}
-              />
-            </div>
-            {showNewMessagePopup && (
-              <div
-                className={styles.newMessagePopup}
-                onClick={handlePopupClick}
-              >
-                새로운 메시지가 도착했습니다.
-              </div>
-            )}
+          )}
+          <div>
+            <InputWithButton
+              message={message}
+              onSend={handleSend}
+              player={player}
+              setPlayer={setPlayer}
+              setMessage={setMessage}
+            />
           </div>
-        )
+          {showNewMessagePopup && (
+            <div className={styles.newMessagePopup} onClick={handlePopupClick}>
+              새로운 메시지가 도착했습니다.
+            </div>
+          )}
+        </div>
       }
     ></Layout>
   );
