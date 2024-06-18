@@ -2,14 +2,14 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import styles from "@/components/selftalk/InputWithButton.module.css";
 import SwitchDemo from "@/components/selftalk/SwitchDemo";
-import { ChangeEvent } from "react";
-
+import { ChangeEvent, RefObject } from "react";
 interface InputWithButtonProps {
   player: string;
   setPlayer: (player: string) => void;
   setMessage: (message: string) => void;
   message: string;
   onSend: () => void;
+  textareaRef: RefObject<HTMLTextAreaElement>;
 }
 
 export default function InputWithButton({
@@ -18,6 +18,7 @@ export default function InputWithButton({
   setMessage,
   message,
   onSend,
+  textareaRef,
 }: InputWithButtonProps) {
   const togglePlayer = () => {
     setPlayer(player === "1p" ? "2p" : "1p");
@@ -43,6 +44,7 @@ export default function InputWithButton({
         value={message}
         onChange={handleChange}
         onKeyDown={handleKeyDown}
+        ref={textareaRef}
       />
       <Button type="button" onClick={onSend}>
         SEND

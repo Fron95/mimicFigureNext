@@ -90,8 +90,13 @@ export default function Home() {
       };
       setChats(updatedChats);
 
+      console.log(textareaRef);
+
       // 모바일 환경에서 키보드 포커스 유지
+      const textarea = document.querySelector("textarea");
+      textarea?.focus;
       if (textareaRef.current) {
+        console.log("zz");
         textareaRef.current.focus();
       }
     }
@@ -395,7 +400,9 @@ export default function Home() {
               </Link>
             </div>
             <br />
-            <p className="text-sm text-muted-foreground">💌 Contact : jsj950611@naver.com <br /> 개선제안 / 잡담 모두 환영 </p>
+            <p className="text-sm text-muted-foreground">
+              💌 Contact : jsj950611@naver.com <br /> 개선제안 / 잡담 모두 환영{" "}
+            </p>
           </div>
         </>
       }
@@ -437,7 +444,6 @@ export default function Home() {
                       autoFocus
                       className={styles.editTextarea}
                       style={{ height: "auto", resize: "none" }} // 모바일에서 textarea의 높이 조절
-                      ref={textareaRef} // textareaRef 추가
                     />
                   ) : (
                     <div onClick={() => setIsEditingDescription(true)}>
@@ -473,6 +479,7 @@ export default function Home() {
               player={player}
               setPlayer={setPlayer}
               setMessage={setMessage}
+              textareaRef={textareaRef}
             />
           </div>
           {showNewMessagePopup && (
