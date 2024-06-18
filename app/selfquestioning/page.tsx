@@ -51,12 +51,12 @@ export default function Home() {
   const scrollViewportRef = useRef<HTMLDivElement>(null);
   const scrollChatViewportRef = useRef<HTMLDivElement>(null);
   const [chats, setChats] = useState<Chat[]>([
-    {
-      title: title,
-      description: description,
-      lastMessageTime: "",
-      messages: [],
-    },
+    // {
+    //   title: title,
+    //   description: description,
+    //   lastMessageTime: "",
+    //   messages: [],
+    // },
   ]);
 
   const [isEditingTitle, setIsEditingTitle] = useState<boolean>(false);
@@ -254,6 +254,9 @@ export default function Home() {
     setStopwatchRunning(true);
     setTimeout(scrollToBottom, 0); // 새로운 대화가 생성되었을 때 최하단으로 스크롤
     setTimeout(scrollChatToBottom, 0); // 새로운 대화가 생성되었을 때 최하단으로 스크롤
+    if (isMobile()) {
+      toggleLeftVisibility()
+    }
   };
 
   const handleLoadChat = (index: number) => {
@@ -399,7 +402,7 @@ export default function Home() {
             <br />
             <div className={styles.buttonWrapperSecond}>
               <Link href="/selfquestioning/effects" passHref>
-                <Button variant="outline">자문자답 사례/설명</Button>
+                <Button variant="outline">자문자답 추천사</Button>
               </Link>
             </div>
             <br />
