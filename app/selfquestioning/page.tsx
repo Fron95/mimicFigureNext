@@ -64,9 +64,14 @@ export default function Home() {
     useState<boolean>(false);
   const [currentChatIndex, setCurrentChatIndex] = useState<number>(0);
   const [stopwatchRunning, setStopwatchRunning] = useState<boolean>(true);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   const handleInputChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setMessage(e.target.value);
+  };
+
+  const isMobile = () => {
+    return /Mobi|Android/i.test(navigator.userAgent);
   };
 
   const handleSend = () => {
@@ -84,6 +89,11 @@ export default function Home() {
         messages: newMessages,
       };
       setChats(updatedChats);
+
+      // 모바일 환경에서 키보드 포커스 유지
+      if (textareaRef.current) {
+        textareaRef.current.focus();
+      }
     }
   };
 
@@ -183,6 +193,8 @@ export default function Home() {
   useEffect(() => {
     if (isScrollBelowHalf()) {
       scrollToBottom();
+    } else if (isMobile()) {
+      scrollToBottom();
     } else {
       setShowNewMessagePopup(true);
     }
@@ -265,10 +277,6 @@ export default function Home() {
 
   const toggleLeftVisibility = () => {
     setIsLeftVisible((prev) => !prev);
-  };
-
-  const isMobile = () => {
-    return /Mobi|Android/i.test(navigator.userAgent);
   };
 
   useEffect(() => {
@@ -380,18 +388,14 @@ export default function Home() {
                 </Table>
               </div>
             </ScrollArea>
-
+            <br />
             <div className={styles.buttonWrapperSecond}>
               <Link href="/selfquestioning/effects" passHref>
-              <br />
-                <Button variant="outline">자문자답 추천사</Button>
+                <Button variant="outline">자문자답 사례/설명</Button>
               </Link>
             </div>
-            <p className="text-sm text-muted-foreground">
-              <br />
-              contact : jsj950611@naver.com <br />
-              의견제안 / 감사의견 / 잡담 모두 환영 !
-            </p>
+            <br />
+            <p className="text-sm text-muted-foreground">💌 Contact : jsj950611@naver.com <br /> 개선제안 / 잡담 모두 환영 </p>
           </div>
         </>
       }
@@ -433,6 +437,7 @@ export default function Home() {
                       autoFocus
                       className={styles.editTextarea}
                       style={{ height: "auto", resize: "none" }} // 모바일에서 textarea의 높이 조절
+                      ref={textareaRef} // textareaRef 추가
                     />
                   ) : (
                     <div onClick={() => setIsEditingDescription(true)}>
