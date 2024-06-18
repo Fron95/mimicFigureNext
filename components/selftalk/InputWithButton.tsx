@@ -21,6 +21,10 @@ export default function InputWithButton({
   textareaRef,
 }: InputWithButtonProps) {
   const togglePlayer = () => {
+    // 모바일 환경에서 키보드 포커스 유지
+    if (textareaRef.current) {
+      textareaRef.current.focus();
+    }
     setPlayer(player === "1p" ? "2p" : "1p");
   };
 

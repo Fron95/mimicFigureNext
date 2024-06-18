@@ -89,12 +89,7 @@ export default function Home() {
         messages: newMessages,
       };
       setChats(updatedChats);
-
-      console.log(textareaRef);
-
       // 모바일 환경에서 키보드 포커스 유지
-      const textarea = document.querySelector("textarea");
-      textarea?.focus;
       if (textareaRef.current) {
         console.log("zz");
         textareaRef.current.focus();
