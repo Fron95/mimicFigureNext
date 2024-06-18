@@ -21,6 +21,10 @@
     /* height: calc(100% - 80px); */
 }
 
+.placeholder {
+    margin: auto auto;
+}
+
 .editableContainer {
     display: flex;
     align-items: center;

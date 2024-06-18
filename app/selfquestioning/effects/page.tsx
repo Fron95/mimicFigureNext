@@ -72,17 +72,7 @@ export default function Home() {
           </ol>
         </li>
       </ol>
-      <div>
-        <Image
-          src="/images/sample_conversation.jpg"
-          alt="sample chat"
-          width={24 * 16}
-          height={24 * 12}
-          // onClick={handleNewChat}
-          // className={styles.icon}
-        />
-        <span>출처 : 오픈카톡방 우르슬라님 (thank you!)</span>
-      </div>
+      
       <TypographyH2>절차</TypographyH2>
       <ol className="my-6 ml-6 list-disc [&>li]:mt-2">
         <li>

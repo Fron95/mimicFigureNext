@@ -413,6 +413,19 @@ export default function Home() {
             isLeftVisible ? styles.rightContentHidden : ""
           }`}
         >
+          {chats.length === 0 && (
+            <div className={styles.placeholder}>
+            <Image
+            src="/images/sample_conversation.jpg"
+            alt="New Chat"
+            width={24 * 18}
+            height={24 * 18}
+            onClick={handleNewChat}
+            
+          />
+          <span>대화출처 : 오픈카톡방 우르슬라님</span>
+          </div>
+          )}
           {chats.length > 0 && (
             <ScrollArea
               className="h-full w-full rounded-md border p-4"
