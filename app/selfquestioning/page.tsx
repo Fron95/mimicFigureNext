@@ -16,11 +16,9 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
-  TableFooter,
-  TableHead,
   TableHeader,
+  TableHead,
   TableRow,
 } from "@/components/ui/table";
 
@@ -51,6 +49,7 @@ export default function Home() {
     useState<boolean>(false);
   const [isLeftVisible, setIsLeftVisible] = useState<boolean>(true);
   const scrollViewportRef = useRef<HTMLDivElement>(null);
+  const scrollChatViewportRef = useRef<HTMLDivElement>(null);
   const [chats, setChats] = useState<Chat[]>([
     {
       title: title,
@@ -78,7 +77,6 @@ export default function Home() {
       setMessages(newMessages);
       setMessage("");
 
-      // 현재 대화 목록 업데이트
       const updatedChats = [...chats];
       updatedChats[currentChatIndex] = {
         ...updatedChats[currentChatIndex],
@@ -158,15 +156,17 @@ export default function Home() {
   const isScrollBelowHalf = () => {
     if (!scrollViewportRef.current) return false;
     const { scrollTop, scrollHeight, clientHeight } = scrollViewportRef.current;
-    // console.log("확인부터", scrollTop, scrollHeight, clientHeight, scrollHeight - clientHeight * 1.2 < scrollTop, scrollHeight - clientHeight * 1.2, scrollTop);
-    // scrollheight : 최대크기
-    // clientheight : 스크린크기
-    // scrolltop : 현재위치중에서 스크린최상단
     return scrollHeight - clientHeight * 1.2 < scrollTop;
   };
 
+  const scrollChatToBottom = () => {
+    if (scrollChatViewportRef.current) {
+      scrollChatViewportRef.current.scrollTop =
+        scrollChatViewportRef.current.scrollHeight;
+    }
+  };
+
   const scrollToBottom = () => {
-    // console.log("내려감");
     if (scrollViewportRef.current) {
       scrollViewportRef.current.scrollTop =
         scrollViewportRef.current.scrollHeight;
@@ -196,11 +196,16 @@ export default function Home() {
   const downloadTxtFile = () => {
     const element = document.createElement("a");
     const fileContent =
-      description +
+      `title : ${title}` +
+      "\n" +
+      "\n" +
+      `Description : ${description}` +
+      "\n" +
+      " ============================ " +
       "\n" +
       messages
         .map((msg) => {
-          const player = msg.player === "1p" ? "자아1" : "자아2";
+          const player = msg.player === "1p" ? "1p" : "2p";
           const time = new Date(msg.time).toLocaleTimeString("ko-KR", {
             hour: "2-digit",
             minute: "2-digit",
@@ -211,15 +216,15 @@ export default function Home() {
 
     const file = new Blob([fileContent], { type: "text/plain" });
     element.href = URL.createObjectURL(file);
-    element.download = "messages.txt";
-    document.body.appendChild(element); // FireFox requires this for download
+    element.download = `${title}.txt`;
+    document.body.appendChild(element);
     element.click();
     document.body.removeChild(element);
   };
 
   const handleNewChat = () => {
     const newChat = {
-      title: `${chats.length + 1}번째 자기대화`,
+      title: `${chats.length + 1}번째 자문자답`,
       description: ini_description,
       lastMessageTime: "",
       messages: [],
@@ -230,8 +235,8 @@ export default function Home() {
     setDescription(newChat.description);
     setMessages(newChat.messages);
     setStopwatchRunning(true);
-    // 새로운 대화가 생성되었을 때 최하단으로 스크롤
-    // setTimeout(scrollToBottom, 0);
+    setTimeout(scrollToBottom, 0); // 새로운 대화가 생성되었을 때 최하단으로 스크롤
+    setTimeout(scrollChatToBottom, 0); // 새로운 대화가 생성되었을 때 최하단으로 스크롤
   };
 
   const handleLoadChat = (index: number) => {
@@ -261,6 +266,33 @@ export default function Home() {
   const toggleLeftVisibility = () => {
     setIsLeftVisible((prev) => !prev);
   };
+
+  const isMobile = () => {
+    return /Mobi|Android/i.test(navigator.userAgent);
+  };
+
+  useEffect(() => {
+    if (isMobile()) {
+      const textarea = document.querySelector("textarea");
+      if (textarea) {
+        textarea.addEventListener("keydown", (e) => {
+          if (e.key === "Enter") {
+            e.stopImmediatePropagation();
+            const { selectionStart, selectionEnd, value } = textarea;
+            textarea.value =
+              value.substring(0, selectionStart) +
+              "\n" +
+              value.substring(selectionEnd);
+            textarea.selectionStart = textarea.selectionEnd =
+              selectionStart + 1;
+            e.preventDefault();
+          }
+        });
+        textarea.style.height = "auto";
+        textarea.style.height = `${textarea.scrollHeight}px`;
+      }
+    }
+  }, []);
 
   return (
     <Layout
@@ -295,10 +327,13 @@ export default function Home() {
                   onClick={downloadTxtFile}
                   className={styles.icon}
                 />
-                <span>대화 내보내기</span>
+                <span>지금 대화 내보내기</span>
               </div>
             </div>
-            <ScrollArea className="h-1/2 w-full rounded-md border p-4">
+            <ScrollArea
+              className="h-1/2 w-full rounded-md border p-4"
+              ref={scrollChatViewportRef}
+            >
               <div className="p-4">
                 <TypographyP>
                   <strong>💬 대화목록</strong>
@@ -348,9 +383,15 @@ export default function Home() {
 
             <div className={styles.buttonWrapperSecond}>
               <Link href="/selfquestioning/effects" passHref>
-                <Button variant="outline">자문자답 사례/설명</Button>
+              <br />
+                <Button variant="outline">자문자답 추천사</Button>
               </Link>
             </div>
+            <p className="text-sm text-muted-foreground">
+              <br />
+              contact : jsj950611@naver.com <br />
+              의견제안 / 감사의견 / 잡담 모두 환영 !
+            </p>
           </div>
         </>
       }
@@ -391,6 +432,7 @@ export default function Home() {
                       onBlur={() => setIsEditingDescription(false)}
                       autoFocus
                       className={styles.editTextarea}
+                      style={{ height: "auto", resize: "none" }} // 모바일에서 textarea의 높이 조절
                     />
                   ) : (
                     <div onClick={() => setIsEditingDescription(true)}>

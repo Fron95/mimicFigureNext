@@ -1,6 +1,7 @@
 // components/Layout.js
 import styles from "./Layout.module.css";
 import { Button } from "@/components/ui/button";
+import Image from "next/image";
 interface LayoutProps {
   isLeftVisible: boolean;
   leftContent: React.ReactNode;
@@ -23,7 +24,7 @@ export default function Layout({
       >
         {leftContent}
         <Button className={styles.toggleButton} onClick={toggleLeftVisibility}>
-          {isLeftVisible ? "대화창보기" : "대화목록보기"}
+          {isLeftVisible ? ">" : "MENU"}
         </Button>
       </div>
       <div
@@ -32,8 +33,9 @@ export default function Layout({
         }`}
       >
         {rightContent}
+
         <Button className={styles.toggleButton} onClick={toggleLeftVisibility}>
-          {isLeftVisible ? "대화창보기" : "대화목록보기"}
+          {isLeftVisible ? ">" : "MENU"}
         </Button>
       </div>
     </div>
