@@ -255,7 +255,7 @@ export default function Home() {
     setTimeout(scrollToBottom, 0); // 새로운 대화가 생성되었을 때 최하단으로 스크롤
     setTimeout(scrollChatToBottom, 0); // 새로운 대화가 생성되었을 때 최하단으로 스크롤
     if (isMobile()) {
-      toggleLeftVisibility()
+      toggleLeftVisibility();
     }
   };
 
@@ -478,16 +478,18 @@ export default function Home() {
               </div>
             </ScrollArea>
           )}
-          <div>
-            <InputWithButton
-              message={message}
-              onSend={handleSend}
-              player={player}
-              setPlayer={setPlayer}
-              setMessage={setMessage}
-              textareaRef={textareaRef}
-            />
-          </div>
+          {chats.length > 0 && (
+            <div>
+              <InputWithButton
+                message={message}
+                onSend={handleSend}
+                player={player}
+                setPlayer={setPlayer}
+                setMessage={setMessage}
+                textareaRef={textareaRef}
+              />
+            </div>
+          )}
           {showNewMessagePopup && (
             <div className={styles.newMessagePopup} onClick={handlePopupClick}>
               새로운 메시지가 도착했습니다.
