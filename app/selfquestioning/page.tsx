@@ -263,6 +263,9 @@ export default function Home() {
     setDescription(chat.description);
     setMessages(chat.messages);
     setStopwatchRunning(true);
+    if (isMobile()) {
+      toggleLeftVisibility();
+    }
     setTimeout(scrollToBottom, 0); // 대화 로드 후 최하단으로 스크롤
   };
 
