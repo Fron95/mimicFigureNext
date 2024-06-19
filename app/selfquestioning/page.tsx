@@ -76,6 +76,21 @@ export default function Home() {
 
   const handleSend = () => {
     if (message.trim() !== "") {
+      fetch("/apitest", {
+        method: "GET",
+      }) // Ensure the route matches the API file name
+        .then((response) => response.json())
+        .then((data) => console.log(data))
+        .catch((error) => console.error("Error fetching data:", error));
+
+      if (isScrollBelowHalf()) {
+        scrollToBottom();
+      } else if (isMobile()) {
+        scrollToBottom();
+      } else {
+        setShowNewMessagePopup(true);
+      }
+
       const now = new Date();
       const time = now.toISOString();
       const newMessages = [...messages, { text: message, player, time }];
@@ -91,7 +106,6 @@ export default function Home() {
       setChats(updatedChats);
       // 모바일 환경에서 키보드 포커스 유지
       if (textareaRef.current) {
-        console.log("zz");
         textareaRef.current.focus();
       }
     }
@@ -166,7 +180,7 @@ export default function Home() {
   const isScrollBelowHalf = () => {
     if (!scrollViewportRef.current) return false;
     const { scrollTop, scrollHeight, clientHeight } = scrollViewportRef.current;
-    return scrollHeight - clientHeight * 1.2 < scrollTop;
+    return scrollHeight - clientHeight * 1.5 < scrollTop;
   };
 
   const scrollChatToBottom = () => {
@@ -190,15 +204,15 @@ export default function Home() {
     }
   });
 
-  useEffect(() => {
-    if (isScrollBelowHalf()) {
-      scrollToBottom();
-    } else if (isMobile()) {
-      scrollToBottom();
-    } else {
-      setShowNewMessagePopup(true);
-    }
-  }, [messages]);
+  // useEffect(() => {
+  //   if (isScrollBelowHalf()) {
+  //     scrollToBottom();
+  //   } else if (isMobile()) {
+  //     scrollToBottom();
+  //   } else {
+  //     setShowNewMessagePopup(true);
+  //   }
+  // }, [messages]);
 
   const handlePopupClick = () => {
     scrollToBottom();
@@ -415,16 +429,15 @@ export default function Home() {
         >
           {chats.length === 0 && (
             <div className={styles.placeholder}>
-            <Image
-            src="/images/sample_conversation.jpg"
-            alt="New Chat"
-            width={24 * 18}
-            height={24 * 18}
-            onClick={handleNewChat}
-            
-          />
-          <span>대화출처 : 오픈카톡방 우르슬라님</span>
-          </div>
+              <Image
+                src="/images/sample_conversation.jpg"
+                alt="New Chat"
+                width={24 * 18}
+                height={24 * 18}
+                onClick={handleNewChat}
+              />
+              <span>대화제공 : 오픈카톡방 우르슬라님</span>
+            </div>
           )}
           {chats.length > 0 && (
             <ScrollArea
