@@ -7,6 +7,8 @@ import TypographyH1 from "@/components/selftalk/TypographyH1";
 import TypographyH2 from "@/components/selftalk/TypographyH2";
 import TypographyP from "@/components/selftalk/TypographyP";
 
+import LoginForm from "@/components/selftalk/login";
+
 import { Button } from "@/components/ui/button";
 import InputWithButton from "@/components/selftalk/InputWithButton";
 import Layout from "@/components/selftalk/Layout";
@@ -21,6 +23,14 @@ import {
   TableHead,
   TableRow,
 } from "@/components/ui/table";
+
+// supabase
+import { createClient } from "@supabase/supabase-js";
+
+const supabaseUrl: string = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+const supabaseAnonKey: string = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+
+const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 interface Message {
   text: string;
@@ -40,6 +50,9 @@ export default function Home() {
   const ini_description =
     "이번 대화를 설명해주세요. 지난 대화를 찾거나 중심을 잡는데 도움이 됩니다.";
 
+  const [nickname, setNickname] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
+  const [userId, setUserId] = useState<string | null>(null);
   const [title, setTitle] = useState<string>(ini_title);
   const [description, setDescription] = useState<string>(ini_description);
   const [messages, setMessages] = useState<Message[]>([]);
@@ -50,15 +63,9 @@ export default function Home() {
   const [isLeftVisible, setIsLeftVisible] = useState<boolean>(true);
   const scrollViewportRef = useRef<HTMLDivElement>(null);
   const scrollChatViewportRef = useRef<HTMLDivElement>(null);
-  const [chats, setChats] = useState<Chat[]>([
-    // {
-    //   title: title,
-    //   description: description,
-    //   lastMessageTime: "",
-    //   messages: [],
-    // },
-  ]);
-
+  const [chats, setChats] = useState<Chat[]>([]);
+  const [isLoginFormActivated, setIsLoginFormActivated] =
+    useState<boolean>(false);
   const [isEditingTitle, setIsEditingTitle] = useState<boolean>(false);
   const [isEditingDescription, setIsEditingDescription] =
     useState<boolean>(false);
@@ -74,23 +81,8 @@ export default function Home() {
     return /Mobi|Android/i.test(navigator.userAgent);
   };
 
-  const handleSend = () => {
+  const handleSend = async () => {
     if (message.trim() !== "") {
-      fetch("/apitest", {
-        method: "GET",
-      }) // Ensure the route matches the API file name
-        .then((response) => response.json())
-        .then((data) => console.log(data))
-        .catch((error) => console.error("Error fetching data:", error));
-
-      if (isScrollBelowHalf()) {
-        scrollToBottom();
-      } else if (isMobile()) {
-        scrollToBottom();
-      } else {
-        setShowNewMessagePopup(true);
-      }
-
       const now = new Date();
       const time = now.toISOString();
       const newMessages = [...messages, { text: message, player, time }];
@@ -104,9 +96,29 @@ export default function Home() {
         messages: newMessages,
       };
       setChats(updatedChats);
+
+      // Supabase에 메시지 저장
+      await supabase.from("selfchatMessages").insert([
+        {
+          chatroom_id: updatedChats[currentChatIndex].id,
+          user_id: userId,
+          message,
+          sent_at: time,
+          player,
+        },
+      ]);
+
       // 모바일 환경에서 키보드 포커스 유지
       if (textareaRef.current) {
         textareaRef.current.focus();
+      }
+
+      if (isScrollBelowHalf()) {
+        scrollToBottom();
+      } else if (isMobile()) {
+        scrollToBottom();
+      } else {
+        setShowNewMessagePopup(true);
       }
     }
   };
@@ -115,26 +127,44 @@ export default function Home() {
     setPlayer(player === "1p" ? "2p" : "1p");
   };
 
-  const handleTogglePlayer = (index: number) => {
+  const handleTogglePlayer = async (index: number) => {
     const updatedMessages = messages.map((msg, i) =>
       i === index ? { ...msg, player: msg.player === "1p" ? "2p" : "1p" } : msg
     );
     setMessages(updatedMessages);
     updateChat(updatedMessages);
+
+    // Supabase에서 메시지 업데이트
+    await supabase
+      .from("selfchatMessages")
+      .update({ player: updatedMessages[index].player })
+      .eq("id", updatedMessages[index].id);
   };
 
-  const handleDeleteMessage = (index: number) => {
+  const handleDeleteMessage = async (index: number) => {
     const updatedMessages = messages.filter((_, i) => i !== index);
     setMessages(updatedMessages);
     updateChat(updatedMessages);
+
+    // Supabase에서 메시지 삭제
+    await supabase
+      .from("selfchatMessages")
+      .delete()
+      .eq("id", messages[index].id);
   };
 
-  const handleEditMessage = (index: number, newText: string) => {
+  const handleEditMessage = async (index: number, newText: string) => {
     const updatedMessages = messages.map((msg, i) =>
       i === index ? { ...msg, text: newText } : msg
     );
     setMessages(updatedMessages);
     updateChat(updatedMessages);
+
+    // Supabase에서 메시지 업데이트
+    await supabase
+      .from("selfchatMessages")
+      .update({ message: newText })
+      .eq("id", updatedMessages[index].id);
   };
 
   const updateChat = (updatedMessages: Message[]) => {
@@ -204,16 +234,6 @@ export default function Home() {
     }
   });
 
-  // useEffect(() => {
-  //   if (isScrollBelowHalf()) {
-  //     scrollToBottom();
-  //   } else if (isMobile()) {
-  //     scrollToBottom();
-  //   } else {
-  //     setShowNewMessagePopup(true);
-  //   }
-  // }, [messages]);
-
   const handlePopupClick = () => {
     scrollToBottom();
     setShowNewMessagePopup(false);
@@ -248,7 +268,7 @@ export default function Home() {
     document.body.removeChild(element);
   };
 
-  const handleNewChat = () => {
+  const handleNewChat = async () => {
     const newChat = {
       title: `${chats.length + 1}번째 자문자답`,
       description: ini_description,
@@ -266,6 +286,30 @@ export default function Home() {
     if (isMobile()) {
       toggleLeftVisibility();
     }
+
+    // Supabase에 새로운 채팅방 저장
+    const { data, error } = await supabase
+      .from("selfchatRoom")
+      .insert([
+        {
+          user_id: userId,
+          title: newChat.title,
+          description: newChat.description,
+          created_at: new Date().toISOString(),
+        },
+      ])
+      .single();
+
+    if (error) {
+      console.error("Error creating chatroom:", error);
+    } else {
+      const chatroomId = data.id;
+      setChats(
+        chats.map((chat, index) =>
+          index === currentChatIndex ? { ...chat, id: chatroomId } : chat
+        )
+      );
+    }
   };
 
   const handleLoadChat = (index: number) => {
@@ -281,7 +325,7 @@ export default function Home() {
     setTimeout(scrollToBottom, 0); // 대화 로드 후 최하단으로 스크롤
   };
 
-  const handleDeleteChat = (index: number) => {
+  const handleDeleteChat = async (index: number) => {
     const updatedChats = chats.filter((_, i) => i !== index);
     setChats(updatedChats);
     if (updatedChats.length === 0) {
@@ -293,10 +337,53 @@ export default function Home() {
       setCurrentChatIndex((prevIndex) => prevIndex - 1);
     }
     setStopwatchRunning(false);
+
+    // Supabase에서 채팅방 삭제
+    await supabase.from("selfchatRoom").delete().eq("id", chats[index].id);
   };
 
   const toggleLeftVisibility = () => {
     setIsLeftVisible((prev) => !prev);
+  };
+
+  const handleUserSubmit = async () => {
+    try {
+      // 사용자 정보 저장 또는 업데이트
+      const { data: existingUser, error: fetchError } = await supabase
+        .from("users")
+        .select("id")
+        .eq("email", email)
+        .maybeSingle(); // maybeSingle()을 사용하여 0개 또는 1개 행을 허용
+
+      if (fetchError) {
+        console.error("Error fetching user:", fetchError);
+        alert("사용자 정보를 가져오는 중 오류가 발생했습니다.");
+        return;
+      }
+
+      if (existingUser) {
+        setUserId(existingUser.id);
+        alert("다시 찾아주셔서 감사합니다.");
+      } else {
+        const { data: newUser, error: insertError } = await supabase
+          .from("users")
+          .insert([{ nickname, email }])
+          .select()
+          .single();
+
+        if (insertError) {
+          console.error("Error creating user:", insertError);
+          alert("사용자 정보를 저장하는 중 오류가 발생했습니다.");
+          return;
+        }
+
+        setUserId(newUser.id);
+        alert("사용자 정보가 저장되었습니다.");
+      }
+    } catch (error) {
+      console.error("Unexpected error:", error);
+      alert("사용자 정보를 처리하는 중 예상치 못한 오류가 발생했습니다.");
+    }
   };
 
   useEffect(() => {
@@ -334,6 +421,7 @@ export default function Home() {
             }`}
           >
             <TypographyH1>자문자답self-questioning</TypographyH1>
+            
             <div className={styles.iconContainer}>
               <div className={styles.iconWrapper}>
                 <Image
@@ -415,6 +503,23 @@ export default function Home() {
               </Link>
             </div>
             <br />
+            <div className={styles.userInputContainer}>
+              {isLoginFormActivated ? (
+                <LoginForm
+                  onSubmit={handleUserSubmit}
+                  setEmail={setEmail}
+                  setNickname={setNickname}
+                />
+              ) : (
+                <div
+                  onClick={() => {
+                    setIsLoginFormActivated(!isLoginFormActivated);
+                  }}
+                >
+                  <Button>Login</Button>
+                </div>
+              )}
+            </div>
             <p className="text-sm text-muted-foreground">
               💌 Contact : jsj950611@naver.com <br /> 개선제안 / 잡담 모두 환영{" "}
             </p>
