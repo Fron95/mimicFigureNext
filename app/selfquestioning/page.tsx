@@ -34,6 +34,7 @@ import {
 
 // supabase
 import { createClient } from "@supabase/supabase-js";
+import { v4 as uuidv4 } from "uuid";
 
 const supabaseUrl: string = process.env.NEXT_PUBLIC_SUPABASE_URL!;
 const supabaseAnonKey: string = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
@@ -68,7 +69,6 @@ export default function Home() {
   const ini_description =
     "이번 대화를 설명해주세요. 지난 대화를 찾거나 중심을 잡는데 도움이 됩니다.";
 
-
   const [nickname, setNickname] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [userId, setUserId] = useState<string | null>(null);
@@ -78,14 +78,14 @@ export default function Home() {
 
   const [messages, setMessages] = useState<Message[]>([]);
   const [message, setMessage] = useState<string>("");
-  const [player, setPlayer] = useState<string>("1p");  
+  const [player, setPlayer] = useState<string>("1p");
   const [showNewMessagePopup, setShowNewMessagePopup] =
     useState<boolean>(false);
-  
-    const [isLeftVisible, setIsLeftVisible] = useState<boolean>(true);
+
+  const [isLeftVisible, setIsLeftVisible] = useState<boolean>(true);
   const scrollViewportRef = useRef<HTMLDivElement>(null);
   const scrollChatViewportRef = useRef<HTMLDivElement>(null);
-  
+
   const [chats, setChats] = useState<Chat[]>([]);
   const [isLoginFormActivated, setIsLoginFormActivated] =
     useState<boolean>(false);
@@ -348,6 +348,7 @@ export default function Home() {
 
   const handleNewChat = async () => {
     const newChat = {
+      id: uuidv4(),
       title: `${chats.length + 1}번째 자문자답`,
       description: ini_description,
       lastMessageTime: "",
@@ -424,9 +425,7 @@ export default function Home() {
     setIsLeftVisible((prev) => !prev);
   };
 
-  const login = async () => {
-
-  }
+  const login = async () => {};
 
   const handleUserSubmit = async () => {
     try {
@@ -469,7 +468,7 @@ export default function Home() {
       console.error("Unexpected error:", error);
       alert("사용자 정보를 처리하는 중 예상치 못한 오류가 발생했습니다.");
     }
-  };  
+  };
 
   const loadUserChats = async () => {
     if (userId) {
