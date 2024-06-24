@@ -1,4 +1,5 @@
 "use client";
+
 import styles from "./page.module.css";
 import Link from "next/link";
 import React, { useState, useEffect, useRef, ChangeEvent } from "react";
@@ -14,6 +15,13 @@ import InputWithButton from "@/components/selftalk/InputWithButton";
 import Layout from "@/components/selftalk/Layout";
 import ChatBubble from "@/components/selftalk/chatbubble";
 import { ScrollArea } from "@/components/ui/scroll-area";
+
+import {
+  sendMessage,
+  toggleMessagePlayer,
+  deleteMessage,
+  editMessage,
+} from "@/services/selftalk/messageService";
 
 import {
   Table,
@@ -32,13 +40,23 @@ const supabaseAnonKey: string = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
 
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
+interface SupabaseChatRoom {
+  id: string;
+  title: string;
+  description: string;
+  created_at: string;
+  user_id: string;
+}
+
 interface Message {
   text: string;
   player: string;
   time: string;
+  chatroom_id: string;
 }
 
 interface Chat {
+  id: string; // 추가
   title: string;
   description: string;
   lastMessageTime: string;
@@ -50,19 +68,24 @@ export default function Home() {
   const ini_description =
     "이번 대화를 설명해주세요. 지난 대화를 찾거나 중심을 잡는데 도움이 됩니다.";
 
+
   const [nickname, setNickname] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [userId, setUserId] = useState<string | null>(null);
+
   const [title, setTitle] = useState<string>(ini_title);
   const [description, setDescription] = useState<string>(ini_description);
+
   const [messages, setMessages] = useState<Message[]>([]);
   const [message, setMessage] = useState<string>("");
-  const [player, setPlayer] = useState<string>("1p");
+  const [player, setPlayer] = useState<string>("1p");  
   const [showNewMessagePopup, setShowNewMessagePopup] =
     useState<boolean>(false);
-  const [isLeftVisible, setIsLeftVisible] = useState<boolean>(true);
+  
+    const [isLeftVisible, setIsLeftVisible] = useState<boolean>(true);
   const scrollViewportRef = useRef<HTMLDivElement>(null);
   const scrollChatViewportRef = useRef<HTMLDivElement>(null);
+  
   const [chats, setChats] = useState<Chat[]>([]);
   const [isLoginFormActivated, setIsLoginFormActivated] =
     useState<boolean>(false);
@@ -71,7 +94,47 @@ export default function Home() {
     useState<boolean>(false);
   const [currentChatIndex, setCurrentChatIndex] = useState<number>(0);
   const [stopwatchRunning, setStopwatchRunning] = useState<boolean>(true);
+
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+  useEffect(() => {
+    if (userId) {
+      loadUserChats();
+    }
+  }, [userId]);
+
+  useEffect(() => {
+    // 초기 로드 시 모든 채팅방 로드
+    loadAllChats();
+  }, []);
+
+  const loadAllChats = async () => {
+    const { data: allChats, error } = await supabase
+      .from("selfchatRooms")
+      .select("id, title, description, lastMessageTime");
+
+    if (error) {
+      console.error("Error fetching all chats:", error);
+    } else {
+      const chatsWithMessages = await Promise.all(
+        allChats.map(async (chat) => {
+          const { data: chatMessages, error: msgError } = await supabase
+            .from("selfchatMessages")
+            .select("text, player, time, chatroom_id")
+            .eq("chatroom_id", chat.id);
+
+          if (msgError) {
+            console.error("Error fetching messages:", msgError);
+            return { ...chat, messages: [] };
+          }
+
+          return { ...chat, messages: chatMessages };
+        })
+      );
+
+      setChats(chatsWithMessages);
+    }
+  };
 
   const handleInputChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setMessage(e.target.value);
@@ -85,7 +148,14 @@ export default function Home() {
     if (message.trim() !== "") {
       const now = new Date();
       const time = now.toISOString();
-      const newMessages = [...messages, { text: message, player, time }];
+      const currentChat = chats[currentChatIndex];
+      const newMessage: Message = {
+        text: message,
+        player,
+        time,
+        chatroom_id: currentChat.id,
+      };
+      const newMessages = [...messages, newMessage];
       setMessages(newMessages);
       setMessage("");
 
@@ -98,15 +168,19 @@ export default function Home() {
       setChats(updatedChats);
 
       // Supabase에 메시지 저장
-      await supabase.from("selfchatMessages").insert([
+      const { error } = await supabase.from("selfchatMessages").insert([
         {
-          chatroom_id: updatedChats[currentChatIndex].id,
+          chatroom_id: newMessage.chatroom_id,
           user_id: userId,
-          message,
+          message: newMessage.text,
           sent_at: time,
-          player,
+          player: newMessage.player,
         },
       ]);
+
+      if (error) {
+        console.error("Error creating message:", error);
+      }
 
       // 모바일 환경에서 키보드 포커스 유지
       if (textareaRef.current) {
@@ -138,10 +212,12 @@ export default function Home() {
     await supabase
       .from("selfchatMessages")
       .update({ player: updatedMessages[index].player })
-      .eq("id", updatedMessages[index].id);
+      .eq("chatroom_id", updatedMessages[index].chatroom_id)
+      .eq("text", updatedMessages[index].text); // 정확한 메시지 식별을 위해 추가
   };
 
   const handleDeleteMessage = async (index: number) => {
+    const messageToDelete = messages[index];
     const updatedMessages = messages.filter((_, i) => i !== index);
     setMessages(updatedMessages);
     updateChat(updatedMessages);
@@ -150,7 +226,8 @@ export default function Home() {
     await supabase
       .from("selfchatMessages")
       .delete()
-      .eq("id", messages[index].id);
+      .eq("chatroom_id", messageToDelete.chatroom_id)
+      .eq("text", messageToDelete.text);
   };
 
   const handleEditMessage = async (index: number, newText: string) => {
@@ -164,7 +241,8 @@ export default function Home() {
     await supabase
       .from("selfchatMessages")
       .update({ message: newText })
-      .eq("id", updatedMessages[index].id);
+      .eq("chatroom_id", updatedMessages[index].chatroom_id)
+      .eq("text", updatedMessages[index].text);
   };
 
   const updateChat = (updatedMessages: Message[]) => {
@@ -289,20 +367,20 @@ export default function Home() {
 
     // Supabase에 새로운 채팅방 저장
     const { data, error } = await supabase
-      .from("selfchatRoom")
+      .from("selfchatRooms")
       .insert([
         {
-          user_id: userId,
+          user_id: userId || "guest", // 로그인하지 않은 경우 guest 사용자로 설정
           title: newChat.title,
           description: newChat.description,
-          created_at: new Date().toISOString(),
         },
       ])
+      .select()
       .single();
 
     if (error) {
       console.error("Error creating chatroom:", error);
-    } else {
+    } else if (data) {
       const chatroomId = data.id;
       setChats(
         chats.map((chat, index) =>
@@ -339,12 +417,16 @@ export default function Home() {
     setStopwatchRunning(false);
 
     // Supabase에서 채팅방 삭제
-    await supabase.from("selfchatRoom").delete().eq("id", chats[index].id);
+    await supabase.from("selfchatRooms").delete().eq("id", chats[index].id);
   };
 
   const toggleLeftVisibility = () => {
     setIsLeftVisible((prev) => !prev);
   };
+
+  const login = async () => {
+
+  }
 
   const handleUserSubmit = async () => {
     try {
@@ -363,7 +445,9 @@ export default function Home() {
 
       if (existingUser) {
         setUserId(existingUser.id);
+
         alert("다시 찾아주셔서 감사합니다.");
+        loadUserChats();
       } else {
         const { data: newUser, error: insertError } = await supabase
           .from("users")
@@ -379,10 +463,42 @@ export default function Home() {
 
         setUserId(newUser.id);
         alert("사용자 정보가 저장되었습니다.");
+        loadUserChats();
       }
     } catch (error) {
       console.error("Unexpected error:", error);
       alert("사용자 정보를 처리하는 중 예상치 못한 오류가 발생했습니다.");
+    }
+  };  
+
+  const loadUserChats = async () => {
+    if (userId) {
+      const { data: userChats, error } = await supabase
+        .from("selfchatRooms")
+        .select("id, title, description, lastMessageTime")
+        .eq("user_id", userId);
+
+      if (error) {
+        console.error("Error fetching chats:", error);
+      } else {
+        const chatsWithMessages = await Promise.all(
+          userChats.map(async (chat) => {
+            const { data: chatMessages, error: msgError } = await supabase
+              .from("selfchatMessages")
+              .select("text, player, time, chatroom_id")
+              .eq("chatroom_id", chat.id);
+
+            if (msgError) {
+              console.error("Error fetching messages:", msgError);
+              return { ...chat, messages: [] };
+            }
+
+            return { ...chat, messages: chatMessages };
+          })
+        );
+
+        setChats(chatsWithMessages);
+      }
     }
   };
 
@@ -421,7 +537,7 @@ export default function Home() {
             }`}
           >
             <TypographyH1>자문자답self-questioning</TypographyH1>
-            
+
             <div className={styles.iconContainer}>
               <div className={styles.iconWrapper}>
                 <Image
