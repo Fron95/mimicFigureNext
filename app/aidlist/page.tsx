@@ -57,7 +57,7 @@ type Chat = {
   id: string;
   title: string;
   description: string;
-  startDate: Date;
+  startdate: Date;
   enddate: string;
   registerdate: string;
   region: string;
