@@ -1,5 +1,6 @@
 "use client";
 
+import styles from "./page.module.css";
 import * as React from "react";
 import {
   ColumnDef,
@@ -43,7 +44,10 @@ const supabaseAnonKey: string = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 async function fetchChatData() {
-  const { data, error } = await supabase.from("aid_list").select("*");
+  const { data, error } = await supabase
+    .from("aid_list")
+    .select("*")
+    .order("sort_date", { ascending: false });
 
   if (error) {
     console.error("Error fetching data:", error);
@@ -57,7 +61,7 @@ type Chat = {
   id: string;
   title: string;
   description: string;
-  startdate: Date;
+  startdate: string;
   enddate: string;
   registerdate: string;
   region: string;
@@ -89,7 +93,7 @@ const columns: ColumnDef<Chat>[] = [
           <div style={{ fontSize: "1.125rem", fontWeight: "bold" }}>
             {row.original.title}
           </div>
-          <div>{row.original.description}</div>
+          <div>{row.original.description ?? "-"}</div>
         </div>
       </a>
     ),
@@ -97,44 +101,73 @@ const columns: ColumnDef<Chat>[] = [
   },
   {
     accessorKey: "startdate",
-    header: "시작일",
+    header: "시작",
     cell: ({ row }) => {
-      <div>{new Date(row.getValue("startdate")).toLocaleDateString()}</div>;
+      const startdate = row.getValue("startdate") as string | undefined;
+      return (
+        <div>{startdate ? new Date(startdate).toLocaleDateString() : "-"}</div>
+      );
     },
     size: 150,
   },
   {
     accessorKey: "enddate",
-    header: "종료일",
-    cell: ({ row }) => (
-      <div>{new Date(row.getValue("enddate")).toLocaleDateString()}</div>
-    ),
+    header: "종료",
+    cell: ({ row }) => {
+      const endDate = row.getValue("enddate") as string | undefined;
+      return (
+        <div>{endDate ? new Date(endDate).toLocaleDateString() : "-"}</div>
+      );
+    },
+    size: 150,
+  },
+  {
+    accessorKey: "remaining",
+    header: "남은기간",
+    cell: ({ row }) => {
+      const endDateValue = row.getValue("enddate") as string | undefined;
+      if (!endDateValue) return <div>-</div>;
+
+      const endDate = new Date(endDateValue);
+      const today = new Date();
+      const diffTime = endDate.getTime() - today.getTime();
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+      return (
+        <div>{diffDays > 0 ? `D-${diffDays}` : `D+${Math.abs(diffDays)}`}</div>
+      );
+    },
     size: 150,
   },
   {
     accessorKey: "region",
     header: "지역",
-    cell: ({ row }) => <div>{row.getValue("region")}</div>,
+    cell: ({ row }) => <div>{row.getValue("region") ?? "-"}</div>,
     size: 150,
   },
   {
     accessorKey: "organization",
     header: "기관",
-    cell: ({ row }) => <div>{row.getValue("organization")}</div>,
+    cell: ({ row }) => <div>{row.getValue("organization") ?? "-"}</div>,
     size: 150,
   },
   {
     accessorKey: "registerdate",
-    header: "등록일",
-    cell: ({ row }) => (
-      <div>{new Date(row.getValue("registerdate")).toLocaleString()}</div>
-    ),
+    header: "공고일",
+    cell: ({ row }) => {
+      const registerdate = row.getValue("registerdate") as string | undefined;
+      return (
+        <div>
+          {registerdate ? new Date(registerdate).toLocaleDateString() : "-"}
+        </div>
+      );
+    },
     size: 150,
   },
   {
     accessorKey: "provider",
     header: "정보제공",
-    cell: ({ row }) => <div>{row.getValue("provider")}</div>,
+    cell: ({ row }) => <div>{row.getValue("provider") ?? "-"}</div>,
     size: 150,
   },
 ];
@@ -152,7 +185,6 @@ export default function Home() {
   React.useEffect(() => {
     async function loadData() {
       const data = await fetchChatData();
-      console.log(data);
       setData(data);
     }
     loadData();
@@ -161,6 +193,7 @@ export default function Home() {
   const table = useReactTable({
     data,
     columns,
+
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),
@@ -175,10 +208,15 @@ export default function Home() {
       columnVisibility,
       rowSelection,
     },
+    initialState: {
+      pagination: {
+        pageSize: 1000,
+      },
+    },
   });
 
   return (
-    <div className="w-full">
+    <div className={styles.container}>
       <div className="flex items-center py-4">
         <Input
           placeholder="Filter titles..."
