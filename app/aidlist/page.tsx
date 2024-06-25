@@ -99,7 +99,7 @@ export const columns: ColumnDef<Chat>[] = [
     accessorKey: "startdate",
     header: "시작일",
     cell: ({ row }) => {
-        <div>{new Date(row.getValue("startdate")).toLocaleDateString()}</div>
+      <div>{new Date(row.getValue("startdate")).toLocaleDateString()}</div>;
     },
     size: 150,
   },
@@ -139,7 +139,7 @@ export const columns: ColumnDef<Chat>[] = [
   },
 ];
 
-export default function DataTableDemo() {
+export default function Home() {
   const [data, setData] = React.useState<Chat[]>([]);
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
