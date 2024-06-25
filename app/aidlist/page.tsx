@@ -1,7 +1,14 @@
 "use client";
 
+import SkeletonCard from "@/components/aidList/SkeletonCard";
+
 import styles from "./page.module.css";
+import TypographyH1 from "@/components/selftalk/TypographyH1";
+import TypographyH2 from "@/components/selftalk/TypographyH2";
+import TypographyP from "@/components/selftalk/TypographyP";
+
 import * as React from "react";
+import Link from "next/link";
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -93,7 +100,7 @@ const columns: ColumnDef<Chat>[] = [
           <div style={{ fontSize: "1.125rem", fontWeight: "bold" }}>
             {row.original.title}
           </div>
-          <div>{row.original.description ?? "-"}</div>
+          <div>{row.original.description ?? ""}</div>
         </div>
       </a>
     ),
@@ -217,6 +224,48 @@ export default function Home() {
 
   return (
     <div className={styles.container}>
+      <div>
+        <TypographyH1>지원사업 공지사항</TypographyH1>
+        
+        <div className="text-lg font-semibold">API 구축이 불완전하여, 매일 19시에 수동갱신됩니다.</div>
+        <TypographyP>이용자가 많으면 자동업데이트 설치 예정입니다.</TypographyP>
+        <TypographyP>아래의 사이트들로부터 자료를 제공받았습니다.</TypographyP>
+        <ol className="my-6 ml-6 list-disc [&>li]:mt-2">
+          <li className="hover:text-red-500">
+            <Link href="https://www.k-startup.go.kr/web/contents/bizpbanc-ongoing.do">
+              K-스타트업
+            </Link>
+          </li>
+          <li className="hover:text-red-500">
+            <Link href="https://www.bizinfo.go.kr/web/lay1/bbs/S1T122C128/AS/74/list.do">
+              기업마당
+            </Link>
+          </li>
+          <li className="hover:text-red-500">
+            <Link href="https://www.sba.seoul.kr/Pages/ContentsMenu/Company_Support.aspx?C=AFF3B5BF-6677-EC11-80E8-9418827691E2">
+              서울경제진흥원
+            </Link>
+          </li>
+          <li className="hover:text-red-500">
+            <Link href="https://ccei.creativekorea.or.kr/seoul/custom/notice_list.do?&page=2">
+              서울창조경제혁신센터
+            </Link>
+          </li>
+          <li className="hover:text-red-500">
+            <Link href="https://www.ripc.org/www2/portal/notice/ripc4NoticeList.do">
+              지역지식재산센터RIPC
+            </Link>
+          </li>
+          <li className="hover:text-red-500">
+            <Link href="https://www.nipa.kr/">정보통신산업진흥원NIPA</Link>
+          </li>
+          <li className="hover:text-red-500">
+            <Link href="https://www.smtech.go.kr/front/ifg/no/notice02_list.do">
+              중소기업기술정보진흥원TIPA
+            </Link>
+          </li>
+        </ol>
+      </div>
       <div className="flex items-center py-4">
         <Input
           placeholder="Filter titles..."
@@ -296,7 +345,8 @@ export default function Home() {
                   colSpan={columns.length}
                   className="h-24 text-center"
                 >
-                  No results.
+                  데이터를 가져오는 중입니다 ...
+                  <SkeletonCard />
                 </TableCell>
               </TableRow>
             )}
