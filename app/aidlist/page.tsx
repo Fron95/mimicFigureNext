@@ -53,7 +53,7 @@ async function fetchChatData() {
   return data;
 }
 
-export type Chat = {
+type Chat = {
   id: string;
   title: string;
   description: string;
@@ -67,7 +67,7 @@ export type Chat = {
   provider: string;
 };
 
-export const columns: ColumnDef<Chat>[] = [
+const columns: ColumnDef<Chat>[] = [
   {
     accessorKey: "id",
     header: "번호",
