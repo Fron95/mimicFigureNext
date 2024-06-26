@@ -31,7 +31,7 @@ export default function CardWithForm({ data }: { data: any }) {
           <CardDescription>{data.description}</CardDescription>
         </CardContent>
         <CardFooter className="flex justify-between">
-          <Link href={`/figure/${data.name}`}>
+          <Link href={data.href ?? `/figure/${data.name}`}>
             <Button>{">>>"}</Button>
           </Link>
         </CardFooter>
