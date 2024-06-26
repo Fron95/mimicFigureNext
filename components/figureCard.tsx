@@ -18,7 +18,7 @@ export default function CardWithForm({ data }: { data: any }) {
     <div>
       <Card className={`w-[350px] ${styles.card_container}`}>
         <CardHeader>
-          <Link href={`/figure/${data.name}`}>
+          <Link href={data.href ?? `/figure/${data.name}`}>
             <div
               className={`flex flex-col items-center mt-4 ${styles.img_container}`}
             >
@@ -32,7 +32,7 @@ export default function CardWithForm({ data }: { data: any }) {
         </CardContent>
         <CardFooter className="flex justify-between">
           <Link href={`/figure/${data.name}`}>
-            <Button>Let's Talk</Button>
+            <Button>{">>>"}</Button>
           </Link>
         </CardFooter>
       </Card>

@@ -51,7 +51,7 @@ export default function Home() {
         
       </p>
       <p className="text-sm text-muted-foreground">
-          Email : lv.up.finance@gmail.com
+          Email : jsj950611@naver.com
         </p>
     </div>
   );

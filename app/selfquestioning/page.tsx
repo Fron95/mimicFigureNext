@@ -618,7 +618,7 @@ export default function Home() {
               </Link>
             </div>
             <br />
-            <div className={styles.userInputContainer}>
+            {/* <div className={styles.userInputContainer}>
               {isLoginFormActivated ? (
                 <LoginForm
                   onSubmit={handleUserSubmit}
@@ -634,7 +634,7 @@ export default function Home() {
                   <Button>Login</Button>
                 </div>
               )}
-            </div>
+            </div> */}
             <p className="text-sm text-muted-foreground">
               💌 Contact : jsj950611@naver.com <br /> 개선제안 / 잡담 모두 환영{" "}
             </p>

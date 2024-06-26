@@ -1,45 +1,80 @@
-import styles from "@/styles/home.module.css";
+import styles from "./page.module.css";
+
+// typography
+import TypographyH1 from "@/components/selftalk/TypographyH1";
+import TypographyH2 from "@/components/selftalk/TypographyH2";
+import TypographyP from "@/components/selftalk/TypographyP";
+
+// 피규어카드
 import FigureCard from "@/components/figureCard";
 import CommingSoonFigureCard from "@/components/commingSoonFigureCard";
-// 메타데이터
+
+// metadata
 import type { Metadata } from "next";
 export const metadata: Metadata = {
-  title: "Ask Titans | Wisdom from the Greats through AI-Powered Chat",
+  title: "스타트업을위한도구들 | 플레이어들의 낭비를 줄이는 것에 집중합니다.",
   description:
     "Explore life lessons from history's greats with Ask Titans' AI chat. Uncover life, business, and leadership insights learned in life with GPT3 chat",
 };
 
-// DataItem 인터페이스 정의
+
 interface DataItem {
-  name: string;
-  available: boolean;
-  // 여기에 data 객체의 다른 속성들을 추가할 수 있습니다.
-}
+    name: string;
+    available: boolean;
+    image:string;
+    description:string;
+    href:string;
+    // 여기에 data 객체의 다른 속성들을 추가할 수 있습니다.
+  }
+
+const datas: DataItem[] = [
+    {
+        name : '거장과의 대화',
+        available : false,
+        image: "https://t2.gstatic.com/licensed-image?q=tbn:ANd9GcSX3ZOe1nBi0kfUtkLB7NcH2Qm64eR8eoZ-0TUppPNN4PfjcGAyW-eemOs2JKdRYH6R",
+        description: "Steve Jobs was an American business magnate, industrial designer, investor, and media proprietor. He was the chairman, chief executive officer (CEO), and co-founder of Apple Inc.",
+        href:"/asktitans"
+    },
+    {
+        name : '자문자답',
+        available : true,
+        image: "https://t2.gstatic.com/licensed-image?q=tbn:ANd9GcSX3ZOe1nBi0kfUtkLB7NcH2Qm64eR8eoZ-0TUppPNN4PfjcGAyW-eemOs2JKdRYH6R",
+        description: "Steve Jobs was an American business magnate, industrial designer, investor, and media proprietor. He was the chairman, chief executive officer (CEO), and co-founder of Apple Inc.",
+        href:"/selfquestioning"
+    },
+    {
+        name : '지원사업',
+        available : true,
+        image: "https://t2.gstatic.com/licensed-image?q=tbn:ANd9GcSX3ZOe1nBi0kfUtkLB7NcH2Qm64eR8eoZ-0TUppPNN4PfjcGAyW-eemOs2JKdRYH6R",
+        description: "Steve Jobs was an American business magnate, industrial designer, investor, and media proprietor. He was the chairman, chief executive officer (CEO), and co-founder of Apple Inc.",
+        href:'/aidlist'
+    }
+]
 
 export default function Home() {
-  const datas: DataItem[] = require("@/files/data.json");
   return (
     <div>
-      <div className={styles.title_container}>
-        <h1
-          className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl"
-          style={{ margin: "20px 0" }}
-        >
-          Ask Titans
-        </h1>
-        <h2 className="scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight first:mt-0">
-          Learn Life Lessons from the Legends
-        </h2>
-      </div>
-      <div className={styles.container}>
-        {Object.values(datas).map((data) =>
-          data.available ? (
-            <FigureCard key={data.name} data={data} />
-          ) : (
-            <CommingSoonFigureCard key={data.name} data={data} />
-          )
-        )}
-      </div>
+    <div className={styles.title_container}>
+      <h1
+        className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl"
+        style={{ margin: "20px 0" }}
+      >
+        스타트업을 위한 도구들
+      </h1>
+      <TypographyP >
+      유용한 정보, 도구, 커뮤니티로
+        플레이어들의 낭비를 줄이는 것에 집중합니다.
+      </TypographyP>
     </div>
+    <div className={styles.container}>
+    {Object.values(datas).map((data) =>
+      data.available ? (
+        <FigureCard key={data.name} data={data} />
+      ) : (
+        <CommingSoonFigureCard key={data.name} data={data} />
+      )
+    )}
+  </div>
+  </div>
   );
 }

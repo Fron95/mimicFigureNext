@@ -23,7 +23,7 @@ export default function Home() {
         expressions of gratitude.
         <br />
         <br />
-        Email : lv.up.finance@gmail.com
+        Email : jsj950611@naver.com
       </p>
     </div>
   );

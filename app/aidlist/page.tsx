@@ -1,5 +1,12 @@
 "use client";
-
+import { isToday, isYesterday, parseISO } from "date-fns";
+const isNew = (created_at:string) => {
+  if (!created_at) {
+    return false;
+  }
+  const date = parseISO(created_at);
+  return isToday(date) || isYesterday(date);
+};
 import SkeletonCard from "@/components/aidList/SkeletonCard";
 
 import styles from "./page.module.css";
@@ -76,6 +83,7 @@ type Chat = {
   organization: string;
   url: string;
   provider: string;
+  created_at : string;
 };
 
 const columns: ColumnDef<Chat>[] = [
@@ -226,8 +234,10 @@ export default function Home() {
     <div className={styles.container}>
       <div>
         <TypographyH1>지원사업 공지사항</TypographyH1>
-        
-        <div className="text-lg font-semibold">API 구축이 불완전하여, 매일 19시에 수동갱신됩니다.</div>
+
+        <div className="text-lg font-semibold">
+          API 구축이 불완전하여, 매일 19시에 수동갱신됩니다.
+        </div>
         <TypographyP>이용자가 많으면 자동업데이트 설치 예정입니다.</TypographyP>
         <TypographyP>아래의 사이트들로부터 자료를 제공받았습니다.</TypographyP>
         <ol className="my-6 ml-6 list-disc [&>li]:mt-2">
@@ -324,21 +334,26 @@ export default function Home() {
           </TableHeader>
           <TableBody>
             {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => (
-                <TableRow
-                  key={row.id}
-                  data-state={row.getIsSelected() && "selected"}
-                >
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              ))
+              table.getRowModel().rows.map((row) => {
+                const created_at = row.original.created_at;
+                const isNewRow = isNew(created_at);
+                return (
+                  <TableRow
+                    className={isNewRow ? "bg-green-600 bg-opacity-25" : ""}
+                    key={row.id}
+                    data-state={row.getIsSelected() && "selected"}
+                  >
+                    {row.getVisibleCells().map((cell) => (
+                      <TableCell key={cell.id}>
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                );
+              })
             ) : (
               <TableRow>
                 <TableCell

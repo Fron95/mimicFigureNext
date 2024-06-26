@@ -32,6 +32,9 @@
     position: relative;
     cursor: pointer;
 }
+.editableContainer:hover {
+    color: red;
+}
 
 .editInput,
 .editTextarea {
