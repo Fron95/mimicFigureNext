@@ -77,7 +77,7 @@ const providerData = [
     url: "https://ccei.creativekorea.or.kr/seoul/custom/notice_list.do?&page=2",
   },
   {
-    name: "RIPC",
+    name: "지역지식재산센터RIPC",
     url: "https://www.ripc.org/www2/portal/notice/ripc4NoticeList.do",
   },
   {
