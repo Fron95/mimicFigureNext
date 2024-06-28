@@ -39,10 +39,14 @@ const PaginationDemo: FC<PaginationDemoProps> = ({
     <Pagination>
       <PaginationContent>
         <PaginationItem>
-          <PaginationPrevious
+          <Button
+            variant="ghost"
+            size="sm"
             onClick={previousPage}
-            disabled={getCanPreviousPage()}
-          />
+            disabled={!getCanPreviousPage()}
+          >
+            Previous
+          </Button>
         </PaginationItem>
         {startPage > 0 && (
           <>
@@ -81,10 +85,14 @@ const PaginationDemo: FC<PaginationDemoProps> = ({
           </>
         )}
         <PaginationItem>
-        <PaginationNext
+          <Button
+            variant="ghost"
+            size="sm"
             onClick={nextPage}
-            disabled={getCanNextPage()}
-          />
+            disabled={!getCanNextPage()}
+          >
+            Next
+          </Button>
         </PaginationItem>
       </PaginationContent>
     </Pagination>
