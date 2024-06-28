@@ -264,8 +264,14 @@ export default function Home() {
     React.useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = React.useState({});
 
-  const [selectedProviders, setSelectedProviders] =
-    React.useState<string[]>(providers); // 타입을 문자열 배열로 설정
+  const [selectedProviders, setSelectedProviders] = React.useState<string[]>(
+    providers.filter(
+      (provider) =>
+        provider !== "지역지식재산센터RIPC" &&
+        provider !== "창조경제혁신센터" &&
+        provider !== "정보통신산업진흥원(NIPA)"
+    )
+  );
 
   React.useEffect(() => {
     async function loadData() {
