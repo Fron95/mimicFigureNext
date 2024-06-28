@@ -154,7 +154,16 @@ const columns: ColumnDef<Chat>[] = [
           <div style={{ fontSize: "1.125rem", fontWeight: "bold" }}>
             {row.original.title}
           </div>
-          <div>{row.original.description ?? ""}</div>
+          <div
+            className={styles["text-ellipsis"]}
+            style={{
+              whiteSpace: "nowrap",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+            }}
+          >
+            {row.original.description ?? ""}
+          </div>
         </div>
       </a>
     ),
@@ -409,16 +418,18 @@ export default function Home() {
                 const isNewRow = isNew(created_at);
                 return (
                   <TableRow
-                    className={isNewRow ? "bg-green-600 bg-opacity-25" : ""}
+                    className={isNewRow ? "bg-green-600 bg-opacity-10" : ""}
                     key={row.id}
                     data-state={row.getIsSelected() && "selected"}
                   >
                     {row.getVisibleCells().map((cell) => (
                       <TableCell key={cell.id}>
+                        <div style={{ whiteSpace: 'nowrap'}}>
                         {flexRender(
                           cell.column.columnDef.cell,
                           cell.getContext()
                         )}
+                        </div>
                       </TableCell>
                     ))}
                   </TableRow>
