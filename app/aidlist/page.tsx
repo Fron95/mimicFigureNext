@@ -73,20 +73,20 @@ const providerData = [
     url: "https://www.sba.seoul.kr/Pages/ContentsMenu/Company_Support.aspx?C=AFF3B5BF-6677-EC11-80E8-9418827691E2",
   },
   {
-    name: "서울창조경제혁신센터",
+    name: "창조경제혁신센터",
     url: "https://ccei.creativekorea.or.kr/seoul/custom/notice_list.do?&page=2",
   },
   {
-    name: "지역지식재산센터RIPC",
+    name: "RIPC",
     url: "https://www.ripc.org/www2/portal/notice/ripc4NoticeList.do",
   },
   {
     name: "이지비즈",
     url: "https://www.egbiz.or.kr/prjCategory/a/m/selectPrjCategoryList.do?part=category",
   },
-  { name: "정보통신산업진흥원NIPA", url: "https://www.nipa.kr/" },
+  { name: "정보통신산업진흥원(NIPA)", url: "https://www.nipa.kr/" },
   {
-    name: "중소기업기술정보진흥원TIPA",
+    name: "중소기업기술정보진흥원(TIPA)",
     url: "https://www.smtech.go.kr/front/ifg/no/notice02_list.do",
   },
 ];
